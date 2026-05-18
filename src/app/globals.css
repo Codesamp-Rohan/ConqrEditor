@@ -76,10 +76,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  svg {
-    color: var(--primary)
-  }
-
   h1,
   h2,
   h3,
@@ -139,10 +135,6 @@
     margin: 0.3rem 0 !important;
   }
 
-  span {
-    color: var(--text-primary) !important;
-  }
-
   strong {
     color: var(--text-primary) !important;
     font-weight: 600 !important;
@@ -159,11 +151,18 @@
     margin-bottom: 0.35rem !important;
   }
 
+  ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: disc;
+}
+
   li {
     line-height: 1.65 !important;
     color: var(--text-secondary) !important;
     margin-bottom: 0.15rem !important;
-    list-style: disc;
   }
 
   blockquote {

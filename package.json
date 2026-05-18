@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@lexical/list": "^0.44.0",
     "@lexical/react": "^0.44.0",
     "@lexical/rich-text": "^0.44.0",
     "@radix-ui/react-dropdown-menu": "^2.1.16",

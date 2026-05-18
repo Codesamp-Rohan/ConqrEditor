@@ -4,7 +4,17 @@ import { useEffect, useState } from "react";
 import { Bold, Italic, Underline } from "lucide-react";
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import HeadingDropdown from "./HeadingDropdown";
 import ToolbarButton from "./ToolbarButton";
+import {
+  List,
+  ListOrdered,
+} from "lucide-react";
+
+import {
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+} from "@lexical/list";
 
 export default function Toolbar() {
     const [editor] = useLexicalComposerContext();
@@ -32,14 +42,15 @@ export default function Toolbar() {
     }, [editor]);
 
     return (
-        <div className={`flex items-center gap-[0.5px] px-2 py-1 border-b border-b-[var(--border)] bg-[var(--background)]`}>
+        <div className={`flex items-center gap-[0.5px] p-1 border-b border-b-[var(--border)] bg-[var(--background)]`}>
+            <HeadingDropdown />
             <ToolbarButton
                 active={activeFormats.bold}
                 onClick={() => {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
                 }}
             >
-                <Bold size={18} />
+                <Bold size={14} />
             </ToolbarButton>
 
             <ToolbarButton
@@ -48,7 +59,7 @@ export default function Toolbar() {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
                 }}
             >
-                <Italic size={18} />
+                <Italic size={14} />
             </ToolbarButton>
 
             <ToolbarButton
@@ -57,8 +68,30 @@ export default function Toolbar() {
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
                 }}
             >
-                <Underline size={18} />
+                <Underline size={14} />
             </ToolbarButton>
+
+            <ToolbarButton
+  onClick={() => {
+    editor.dispatchCommand(
+      INSERT_UNORDERED_LIST_COMMAND,
+      undefined
+    );
+  }}
+>
+  <List size={14} />
+</ToolbarButton>
+
+<ToolbarButton
+  onClick={() => {
+    editor.dispatchCommand(
+      INSERT_ORDERED_LIST_COMMAND,
+      undefined
+    );
+  }}
+>
+  <ListOrdered size={14} />
+</ToolbarButton>
         </div>
     );
 }

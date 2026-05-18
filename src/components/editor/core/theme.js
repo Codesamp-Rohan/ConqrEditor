@@ -6,20 +6,17 @@ const theme = {
         h2: "text-3xl font-semibold mb-3 mt-5",
         h3: "text-2xl font-semibold mb-3 mt-4",
     },
-
     text: {
         bold: "font-bold",
         italic: "italic",
         underline: "underline",
         code: "bg-muted px-1 py-0.5 rounded text-sm font-mono",
     },
-
     list: {
-        ul: "list-disc ml-6 mb-2",
-        ol: "list-decimal ml-6 mb-2",
+        ul: "list-disc ml-6 my-2",
+        ol: "list-decimal ml-6 my-2",
         listitem: "mb-1",
     },
-
     quote:
         "border-l-4 border-[var(--border)] pl-4 italic text-[--text-secondary]",
 

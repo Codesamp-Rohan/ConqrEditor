@@ -6,15 +6,11 @@ import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import HeadingDropdown from "./HeadingDropdown";
 import ToolbarButton from "./ToolbarButton";
-import {
-  List,
-  ListOrdered,
-} from "lucide-react";
-
-import {
-  INSERT_ORDERED_LIST_COMMAND,
-  INSERT_UNORDERED_LIST_COMMAND,
-} from "@lexical/list";
+import {List, ListOrdered, LucideMessageSquareQuote, Code2,} from "lucide-react";
+import {$createQuoteNode} from "@lexical/rich-text";
+import {$createCodeNode,} from "@lexical/code";
+import {$setBlocksType,} from "@lexical/selection";
+import {INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND,} from "@lexical/list";
 
 export default function Toolbar() {
     const [editor] = useLexicalComposerContext();
@@ -42,7 +38,7 @@ export default function Toolbar() {
     }, [editor]);
 
     return (
-        <div className={`flex items-center gap-[0.5px] p-1 border-b border-b-[var(--border)] bg-[var(--background)]`}>
+        <div className={`flex items-center !gap-[3.5px] p-1 border-b border-b-[var(--border)] bg-[var(--background)]`}>
             <HeadingDropdown />
             <ToolbarButton
                 active={activeFormats.bold}
@@ -92,6 +88,36 @@ export default function Toolbar() {
 >
   <ListOrdered size={14} />
 </ToolbarButton>
+            <ToolbarButton
+                onClick={() => {
+                    editor.update(() => {
+                        const selection = $getSelection();
+
+                        if ($isRangeSelection(selection)) {
+                            $setBlocksType(selection, () =>
+                                $createQuoteNode()
+                            );
+                        }
+                    });
+                }}
+            >
+                <LucideMessageSquareQuote size={14} />
+            </ToolbarButton>
+            <ToolbarButton
+                onClick={() => {
+                    editor.update(() => {
+                        const selection = $getSelection();
+
+                        if ($isRangeSelection(selection)) {
+                            $setBlocksType(selection, () =>
+                                $createCodeNode()
+                            );
+                        }
+                    });
+                }}
+            >
+                <Code2 size={14} />
+            </ToolbarButton>
         </div>
     );
 }

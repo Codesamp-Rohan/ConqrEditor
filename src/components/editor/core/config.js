@@ -1,10 +1,7 @@
 import theme from "./theme";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-
-import {
-  ListNode,
-  ListItemNode,
-} from "@lexical/list";
+import {CodeNode, CodeHighlightNode} from "@lexical/code";
+import {ListNode, ListItemNode} from "@lexical/list";
 
 const editorConfig = {
   namespace: "ConqrEditor",
@@ -18,6 +15,8 @@ const editorConfig = {
     QuoteNode,
     ListNode,
     ListItemNode,
+    CodeNode,
+    CodeHighlightNode
   ],
 };
 

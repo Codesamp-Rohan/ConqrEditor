@@ -33,9 +33,7 @@ import {
     $createCodeNode,
 } from "@lexical/code";
 
-export default function BlockActions({
-                                         position, activeBlock
-                                     }) {
+export default function BlockActions({position, activeBlock,  setDraggedBlock}) {
     const [open, setOpen] = useState(false);
     const [editor] = useLexicalComposerContext();
     const [dragging, setDragging] = useState(false);
@@ -108,32 +106,24 @@ export default function BlockActions({
                 draggable
 
                 onDragStart={(e) => {
-                    setDragging(true);
+  e.dataTransfer.effectAllowed = "move";
 
-                    e.dataTransfer.setData(
-                        "text/plain",
-                        ""
-                    );
+  if (activeBlock) {
+    setDraggedBlock(activeBlock);
 
-                    e.dataTransfer.effectAllowed =
-                        "move";
-
-                    if (activeBlock) {
-                        activeBlock.classList.add(
-                            "opacity-50"
-                        );
-                    }
-                }}
+    activeBlock.classList.add(
+      "opacity-50"
+    );
+  }
+}}
 
                 onDragEnd={() => {
-                    setDragging(false);
-
-                    if (activeBlock) {
-                        activeBlock.classList.remove(
-                            "opacity-50"
-                        );
-                    }
-                }}
+  if (activeBlock) {
+    activeBlock.classList.remove(
+      "opacity-50"
+    );
+  }
+}}
                 className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--hover)] hover:text-[var(--text-primary)]"
             >
                 <GripVertical size={16} />

@@ -5,7 +5,7 @@ export default function FloatingToolbarButton({
     return (
         <button
             onClick={onClick}
-            className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-white/10"
+            className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-[var(--hover)] cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         >
             {children}
         </button>

@@ -16,21 +16,114 @@ import {
     INSERT_ORDERED_LIST_COMMAND,
     INSERT_UNORDERED_LIST_COMMAND,
 } from "@lexical/list";
+import {
+  $convertFromMarkdownString,
+  TRANSFORMERS,
+} from "@lexical/markdown";
 import { $setBlocksType } from "@lexical/selection";
 import { $createCodeNode } from "@lexical/code";
+import { askGemini } from "@/lib/ai/gemini";
+import { useSettingsStore } from "@/store/settingsStore";
+import { $getRoot } from "lexical";
+import { useRef } from "react";
+import { useAIStore } from "@/store/aiStore";
+
 
 export default function SlashCommandPlugin() {
     const [editor] = useLexicalComposerContext();
+    const { geminiApiKey } = useSettingsStore();
+    const { loading, setLoading } = useAIStore();
     const [open, setOpen] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [query, setQuery] = useState("");
+    const [dismissed, setDismissed] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const menuRef = useRef(null);
+
+    const runAICommand = async (
+  type
+) => {
+  if (!geminiApiKey) {
+    alert(
+      "Please add Gemini API key first."
+    );
+
+    return;
+  }
+
+  const text =
+    editor.getEditorState().read(() => {
+      return $getRoot().getTextContent();
+    });
+
+  let prompt = "";
+
+  switch (type) {
+    case "ai-summarize":
+      prompt = `Summarize this content:\n\n${text}`;
+      break;
+
+    case "ai-explain":
+      prompt = `Explain this content in simple terms:\n\n${text}`;
+      break;
+
+    case "ai-flashcards":
+      prompt = `Create flashcards from this content:\n\n${text}`;
+      break;
+
+    default:
+      return;
+  }
+
+  try {
+    setLoading(true);
+
+    const response =
+      await askGemini({
+        apiKey: geminiApiKey,
+        prompt,
+      });
+
+    editor.update(() => {
+      const selection =
+        $getSelection();
+
+      if (
+        !$isRangeSelection(selection)
+      ) {
+        return;
+      }
+
+      editor.update(() => {
+  $convertFromMarkdownString(
+    response,
+    TRANSFORMERS
+  );
+});
+    });
+  } catch (error) {
+    console.error(error);
+
+    alert(
+  error?.message ||
+  "AI request failed."
+);
+  } finally {
+    setLoading(false);
+  }
+};
 
     const handleCommand = (item) => {
         editor.update(() => {
             const selection = $getSelection();
 
             if (!$isRangeSelection(selection)) return;
+
+            if (item.type.startsWith("ai-")) {
+                runAICommand(item.type);
+                setOpen(false);
+                return;
+            }
 
             // Perform action based on the selected item
             switch (item.type) {
@@ -77,6 +170,34 @@ export default function SlashCommandPlugin() {
         setSelectedIndex(0); // Reset selection index when query changes
     }, [query]);
 
+       useEffect(() => {
+  const handleClickOutside = (
+    event
+  ) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(
+        event.target
+      )
+    ) {
+      setOpen(false);
+      setDismissed(true);
+    }
+  };
+
+  document.addEventListener(
+    "mousedown",
+    handleClickOutside
+  );
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
+}, []);
+
     useEffect(() => {
         const removeUpdateListener = editor.registerUpdateListener(({ editorState }) => {
             editorState.read(() => {
@@ -91,6 +212,7 @@ export default function SlashCommandPlugin() {
 
                 // Detect `/` to open the menu but close on specific conditions
                 const slashIndex = textBeforeCursor.lastIndexOf("/");
+                if (slashIndex === -1) setDismissed(false);
                 if (/^<\/?[\w\s]*>$/.test(textBeforeCursor)) {
                     // If it's a valid opening/closing tag, close the dropdown
                     setOpen(false);
@@ -98,10 +220,11 @@ export default function SlashCommandPlugin() {
                     return;
                 }
 
-                if (slashIndex !== -1) {
-                    const searchText = textBeforeCursor.slice(slashIndex + 1);
+                const searchText = textBeforeCursor.slice(slashIndex + 1);
+                    const isValidQuery = /^[a-zA-Z-]*$/.test(searchText);
 
-                    setQuery(searchText);
+                if (slashIndex !== -1 && isValidQuery && !dismissed) {
+                    setQuery(isValidQuery ? searchText : "");
 
                     const domSelection = window.getSelection();
                     if (!domSelection || domSelection.rangeCount === 0) return;
@@ -179,7 +302,7 @@ export default function SlashCommandPlugin() {
     if (!open) return null;
 
     return (
-        <div
+        <div ref={menuRef}
             style={{ position: "fixed", left: position.x, top: position.y }}
             className="z-50"
         >

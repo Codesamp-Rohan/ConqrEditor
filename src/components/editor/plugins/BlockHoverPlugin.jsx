@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import BlockActions from "../blocks/BlockActions";
+import {$getNearestNodeFromDOMNode} from "lexical";
 
 export default function BlockHoverPlugin() {
     const [editor] = useLexicalComposerContext();
@@ -12,6 +13,7 @@ export default function BlockHoverPlugin() {
     });
     const [visible, setVisible] = useState(false);
     const [activeBlock, setActiveBlock] = useState(null);
+    const [draggedBlock, setDraggedBlock] = useState(null);
 
     useEffect(() => {
         const rootElement = editor.getRootElement();
@@ -32,30 +34,6 @@ export default function BlockHoverPlugin() {
                 return;
             }
             setActiveBlock(block);
-            block.ondragover = (e) => {
-                e.preventDefault();
-            };
-
-            block.ondrop = (e) => {
-                e.preventDefault();
-
-                const draggingEl =
-                    document.querySelector(".opacity-50");
-
-                if (
-                    draggingEl &&
-                    draggingEl !== block
-                ) {
-                    block.parentNode.insertBefore(
-                        draggingEl,
-                        block
-                    );
-
-                    draggingEl.classList.remove(
-                        "opacity-50"
-                    );
-                }
-            };
             const rect = block.getBoundingClientRect();
 
             setPosition({
@@ -71,13 +49,84 @@ export default function BlockHoverPlugin() {
             handleMouseMove
         );
 
+        const handleDragOver = (e) => {
+  e.preventDefault();
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+
+  if (!draggedBlock) return;
+
+  const target = e.target;
+
+  if (!(target instanceof HTMLElement)) return;
+
+  const dropBlock = target.closest(
+    "p, h1, h2, h3, pre, blockquote, li"
+  );
+
+  if (
+    !dropBlock ||
+    dropBlock === draggedBlock
+  ) {
+    return;
+  }
+
+  editor.update(() => {
+    const draggedNode =
+      $getNearestNodeFromDOMNode(
+        draggedBlock
+      );
+
+    const targetNode =
+      $getNearestNodeFromDOMNode(
+        dropBlock
+      );
+
+    if (
+      draggedNode &&
+      targetNode
+    ) {
+      targetNode.insertBefore(
+        draggedNode
+      );
+    }
+  });
+
+  draggedBlock.classList.remove(
+    "opacity-50"
+  );
+
+  setDraggedBlock(null);
+};
+
+rootElement.addEventListener(
+  "dragover",
+  handleDragOver
+);
+
+rootElement.addEventListener(
+  "drop",
+  handleDrop
+);
+
         return () => {
             rootElement.removeEventListener(
                 "mousemove",
                 handleMouseMove
             );
+            rootElement.removeEventListener(
+  "dragover",
+  handleDragOver
+);
+
+rootElement.removeEventListener(
+  "drop",
+  handleDrop
+);
         };
-    }, [editor]);
+    }, [editor, draggedBlock]);
 
     if (!visible) return null;
 
@@ -85,6 +134,7 @@ export default function BlockHoverPlugin() {
         <BlockActions
             position={position}
             activeBlock={activeBlock}
+            setDraggedBlock={setDraggedBlock}
         />
     )
 }

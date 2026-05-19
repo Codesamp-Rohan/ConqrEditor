@@ -31,4 +31,23 @@ export const slashItems = [
         description: "Insert quote block",
         type: "quote",
     },
+
+    // AI Command
+    {
+  title: "AI Summarize",
+  description: "Summarize current content",
+  type: "ai-summarize",
+},
+
+{
+  title: "AI Explain",
+  description: "Explain current content",
+  type: "ai-explain",
+},
+
+{
+  title: "Generate Flashcards",
+  description: "Create study flashcards",
+  type: "ai-flashcards",
+},
 ];

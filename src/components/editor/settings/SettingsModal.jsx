@@ -21,9 +21,9 @@ export default function SettingsModal({open,onClose}) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--foreground)] p-5 shadow-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--conqr-muted)] p-5 shadow-2xl">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
+          <h2 className="text-lg font-semibold !text-[var(--conqr-secondary)]">
             AI Settings
           </h2>
 
@@ -47,7 +47,7 @@ export default function SettingsModal({open,onClose}) {
               setValue(e.target.value)
             }
             placeholder="your-gemini-key..."
-            className="w-full rounded-lg border border-[var(--border)] bg-transparent px-2 text-[11px] py-2 font-mono outline-none focus:border-[var(--primary)]"
+            className="w-full rounded-lg border border-[var(--conqr-secondary)] bg-transparent px-2 text-[11px] py-2 font-mono outline-none focus:border-[var(--primary)]"
           />
           {
             isVisible ? (
@@ -55,18 +55,18 @@ export default function SettingsModal({open,onClose}) {
                 onClick={() => {
                   setIsVisible(false);
                 }}
-                className="relative rounded-md text-sm font-mono text-[var(--text-muted)] hover:bg-[var(--hover)]"
+                className="relative rounded-md text-sm font-mono text-[var(--conqr-secondary)] mx-2"
               >
-                <Eye size={14} />
+                <Eye size={18} />
               </button>
             ) : (
               <button
                 onClick={() => {
                   setIsVisible(true);
                 }}
-                className="relative rounded-md text-sm font-mono text-[var(--text-muted)] hover:bg-[var(--hover)]"
+                className="relative rounded-md text-sm font-mono text-[var(--conqr-secondary)] mx-2"
               >
-                <EyeOff size={14} />
+                <EyeOff size={18} />
               </button>
             )
           }
@@ -81,7 +81,7 @@ export default function SettingsModal({open,onClose}) {
 
             onClose();
           }}
-          className="mt-5 w-full rounded-lg bg-[var(--primary)] px-2 py-2 text-sm font-medium text-sm font-mono text-white transition-all hover:opacity-90"
+          className="mt-5 w-full rounded-lg bg-[var(--conqr-secondary)] px-2 py-2 text-sm font-medium font-mono text-white transition-all hover:opacity-90"
         >
           Save Settings
         </button>

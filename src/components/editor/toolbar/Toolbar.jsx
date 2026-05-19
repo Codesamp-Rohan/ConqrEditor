@@ -23,39 +23,83 @@ export default function Toolbar() {
     const [activeFormats, setActiveFormats] = useState({bold: false,italic: false,underline: false});
     const [alignment, setAlignment] = useState("left");
     const [showColors, setShowColors] = useState(false);
+    const [fontSize, setFontSize] = useState("16");
     const [showFontSizes, setShowFontSizes] = useState(false);
     const [showHighlights, setShowHighlights] = useState(false);
     const [showFontWeights, setShowFontWeights] = useState(false);
 
     useEffect(() => {
-        return editor.registerUpdateListener(({ editorState }) => {
-            editorState.read(() => {
-                const selection = $getSelection();
+        return editor.registerUpdateListener(
+            ({ editorState }) => {
+                editorState.read(() => {
+                    const selection =
+                        $getSelection();
 
-                if ($isRangeSelection(selection)) {
+                    // IMPORTANT FIX
+                    if (
+                        !$isRangeSelection(
+                            selection
+                        )
+                    ) {
+                        return;
+                    }
+
+                    const node =
+                        selection.anchor.getNode();
+
+                    if (
+                        typeof node.getStyle ===
+                        "function"
+                    ) {
+                        const style =
+                            node.getStyle();
+
+                        const match =
+                            style.match(
+                                /font-size:\s*(\d+)px/
+                            );
+
+                        setFontSize(
+                            match
+                                ? match[1]
+                                : "16"
+                        );
+                    }
+
                     setActiveFormats({
-                        bold: selection.hasFormat("bold"),
-                        italic: selection.hasFormat("italic"),
-                        underline: selection.hasFormat("underline"),
+                        bold: selection.hasFormat(
+                            "bold"
+                        ),
+                        italic:
+                            selection.hasFormat(
+                                "italic"
+                            ),
+                        underline:
+                            selection.hasFormat(
+                                "underline"
+                            ),
                     });
-                }
-                const anchorNode =
-  selection.anchor
-    .getNode()
-    .getTopLevelElement();
 
-if (anchorNode) {
-  const format =
-    anchorNode.getFormatType();
+                    const anchorNode =
+                        selection.anchor
+                            .getNode()
+                            .getTopLevelElement();
 
-  setAlignment(format || "left");
-}
-            });
-        });
+                    if (anchorNode) {
+                        const format =
+                            anchorNode.getFormatType();
+
+                        setAlignment(
+                            format || "left"
+                        );
+                    }
+                });
+            }
+        );
     }, [editor]);
 
     return (
-        <div className={`sticky top-0 z-50 flex items-center !gap-[3.5px] p-1 border-b border-b-[var(--border)] bg-[var(--background)]`}>
+        <div className={`sticky top-0 z-50 flex items-center !gap-[3.5px] p-1 border-b border-b-[var(--border-muted)] bg-[var(--conqr-muted)] shadow-xl shadow-white/20`}>
             <HeadingDropdown />
             <ToolbarButton
                 active={activeFormats.bold}
@@ -174,7 +218,7 @@ active={alignment === "right"}
 </ToolbarButton>
 
 <ToolbarButton
-active={alignment === "jsustify"}
+active={alignment === "justify"}
   onClick={() => {
     editor.dispatchCommand(
       FORMAT_ELEMENT_COMMAND,
@@ -289,7 +333,15 @@ setShowHighlights(false);
       )
     }
   >
-    <Type size={14} />
+      <div className="flex items-end gap-[1px]">
+  <span className="text-[11px] font-medium">
+    {fontSize}
+  </span>
+
+          <span className="text-[10px] text-[var(--text-muted)]">
+    px
+  </span>
+      </div>
   </ToolbarButton>
 
   {showFontSizes && (
@@ -304,19 +356,13 @@ setShowHighlights(false);
               selection
             )
           ) {
-            selection.getNodes().forEach((node) => {
-  if (
-    typeof node.setStyle ===
-    "function"
-  ) {
-    const existing =
-      node.getStyle();
-
-    node.setStyle(
-      `${existing}; font-size: ${size}px`
-    );
-  }
-});
+              $patchStyleText(
+                  selection,
+                  {
+                      "font-size":
+                          `${size}px`,
+                  }
+              );
           }
         });
 

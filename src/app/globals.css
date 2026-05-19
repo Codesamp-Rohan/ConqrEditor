@@ -25,6 +25,7 @@
 
     --border: #e4e4e7;
     --border-bold: #d4d4d8;
+    --border-muted: #fff;
     --input: #e4e4e7;
     --ring: #09090b;
 
@@ -37,6 +38,8 @@
     --text-secondary: #999999;
     --text-muted: #71717a;
 
+    --conqr-primary: #F8CD9F;
+    --conqr-muted: #fae3ca;
     --conqr-secondary: #0C4160;
   }
 
@@ -218,7 +221,7 @@ code, pre {
 }
 
 .editor-content code {
-  background: var(--background) !important;
+  background: var(--conqr-muted) !important;
   padding: 0.6rem 1rem !important;
   border-radius: 8px !important;
   font-weight: bold;

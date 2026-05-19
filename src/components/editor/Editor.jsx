@@ -17,20 +17,28 @@ import { ibmPlex } from "@/lib/fonts";
 import editorConfig from "./core/config";
 import Toolbar from "./toolbar/Toolbar";
 import SlashMenu from "./slash/SlashMenu";
+import LocalStoragePlugin from "@/components/editor/plugins/LocalStoragePlugin";
+import UploadButton from "@/components/editor/upload/UploadButton";
+import ImportPlugin from "@/components/editor/plugins/ImportPlugin";
 
 export default function Editor() {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const { loading } = useAIStore();
+    const [uploadedContent, setUploadedContent] = useState("");
     
     return (
-        <div className="min-h-screen bg-[--background] flex items-center">
-            <div className="mx-auto h-screen w-full flex items-center justify-center bg-[--background] rounded-lg p-4">
-                <div className="relative border border-[var(--border)] overflow-auto rounded-lg w-screen h-screen max-h-[95vh] max-w-[1080px] bg-[var(--foreground)]">
+        <div className="min-h-screen bg-[var(--conqr-primary)] flex items-center">
+            <div className="mx-auto h-screen w-full flex items-center justify-center bg-[var(--conqr-primary)] rounded-lg p-4 pt-16">
+                <div className="relative border border-[var(--border)] overflow-auto rounded-lg w-screen h-screen max-h-[90vh] max-w-[1080px] bg-[var(--conqr-muted)]">
                     <LexicalComposer initialConfig={editorConfig}>
-                            <button onClick={() =>setSettingsOpen(true)} className="absolute h-[30px] flex items-center gap-2 cursor-pointer rounded-md border border-[var(--border)] px-2 text-sm transition-all bg-[var(--foreground)] hover:bg-[var(--hover)]" style={{ right: "4px", top: "4px", zIndex: 100}}>
+                        <div className="flex items-center gap-2 fixed top-2 right-3">
+                            <UploadButton onLoad={setUploadedContent} />
+                            <ImportPlugin content={uploadedContent} />
+                        <button onClick={() =>setSettingsOpen(true)} className="flex items-center gap-2 rounded-md px-2 py-1 text-sm bg-[var(--foreground)] hover:bg-[var(--conqr-secondary)] cursor-pointer hover:text-[var(--hover)] hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]" style={{ right: "4px", top: "4px", zIndex: 100}}>
                                 <Settings size={14} />
                                 AI Settings
-                            </button>
+                        </button>
+                        </div>
                         <Toolbar />
                         <EditorAutoFocusPlugin />
                         <EditorListPlugin />
@@ -47,6 +55,7 @@ export default function Editor() {
                         />
 
                         <HistoryPlugin />
+                        <LocalStoragePlugin />
                         <SettingsModal open={settingsOpen} onClose={() =>setSettingsOpen(false)}/>
                     </LexicalComposer>
                     {loading && (

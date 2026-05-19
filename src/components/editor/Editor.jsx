@@ -13,7 +13,7 @@ import { useState } from "react";
 import { Settings } from "lucide-react";
 import SettingsModal from "./settings/SettingsModal";
 import { useAIStore } from "@/store/aiStore";
-
+import { ibmPlex } from "@/lib/fonts";
 import editorConfig from "./core/config";
 import Toolbar from "./toolbar/Toolbar";
 import SlashMenu from "./slash/SlashMenu";
@@ -39,10 +39,10 @@ export default function Editor() {
                         <BlockHoverPlugin />
                         <RichTextPlugin
                             contentEditable={
-                                <ContentEditable className="editor-content min-h-[500px] h-[calc(100% - 64px)] px-[4rem] py-5 outline-none text-[16px] leading-7 text-[var(--text-primary)]" spellCheck={false} data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false"/>
+                                <ContentEditable className={`editor-content ${ibmPlex.className} min-h-[500px] h-[calc(100% - 64px)] px-[4rem] py-5 outline-none leading-7 text-[var(--text-primary)]`} spellCheck={false} data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false"/>
                             }
                             placeholder={
-                            <div className="pointer-events-none absolute left-17 top-[68px] text-[15px] text-[var(--text-muted)]">Press "/" for commands</div>
+                            <div className="pointer-events-none absolute left-17 top-[68px] text-[12px] font-mono font-[family:var(--font-editor)] text-[var(--text-muted)]">Press "/" for commands</div>
                         }
                         />
 

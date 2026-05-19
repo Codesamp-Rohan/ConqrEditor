@@ -6,7 +6,7 @@ export default function SlashMenu({
     selectedIndex
                                   }) {
     return (
-        <div className="absolute left-[-2px] top-0 z-50 w-72 rounded-2xl border border-[var(--border)] bg-[var(--foreground)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+        <div className="absolute left-[-2px] top-0 z-50 w-72 rounded-lg border border-[var(--border)] bg-[var(--foreground)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
             {items.map((item, index) => (
                 <SlashMenuItem
                     key={item.type}

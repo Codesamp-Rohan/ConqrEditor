@@ -1,5 +1,5 @@
 const theme = {
-    paragraph: "mb-2 text-[16px] leading-7 !text-[--text-primary]",
+    paragraph: "mb-2 leading-7 !text-[--text-primary]",
 
     heading: {
         h1: "text-4xl font-bold mb-4 mt-6",

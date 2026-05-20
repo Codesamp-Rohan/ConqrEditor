@@ -11,6 +11,7 @@ import FloatingToolbarPlugin from '@/components/editor/plugins/FloatingToolbarPl
 import BlockHoverPlugin from '@/components/editor/plugins/BlockHoverPlugin';
 import SelectionPlugin from '@/components/editor/plugins/SelectionPlugin';
 import ReplaceSelectionPlugin from '@/components/editor/plugins/ReplaceSelectionPlugin';
+import DocumentTrackerPlugin from "@/components/editor/plugins/DocumentTrackerPlugin";
 import { useState } from 'react';
 import SettingsModal from './settings/SettingsModal';
 import { useAIStore } from '@/store/aiStore';
@@ -51,6 +52,7 @@ export default function Editor() {
             <SelectionPlugin />
             <ReplaceSelectionPlugin />
             <ClearEditorPlugin clearTrigger={clearTrigger} />
+            <DocumentTrackerPlugin />
             <RichTextPlugin
               contentEditable={
                 <ContentEditable

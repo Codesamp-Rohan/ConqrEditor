@@ -6,6 +6,7 @@ export const useAIStore = create((set) => ({
   aiResponse: "",
   pendingSuggestion: "",
   messages: [],
+  documentText: "",
 
   setPendingSuggestion: (text) => set({ pendingSuggestion: text }),
   clearPendingSuggestion: () => set({ pendingSuggestion: "" }),
@@ -20,4 +21,8 @@ export const useAIStore = create((set) => ({
     set({
       messages: [],
     }),
+  setDocumentText: (text) =>
+      set({
+        documentText: text,
+      }),
 }));

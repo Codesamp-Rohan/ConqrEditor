@@ -15,6 +15,6 @@ export const useSettingsStore = create(
 
     {
       name: "conqr-editor-settings",
-    }
-  )
+    },
+  ),
 );

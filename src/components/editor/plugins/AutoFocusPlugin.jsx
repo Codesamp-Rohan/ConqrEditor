@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 
 export default function EditorAutoFocusPlugin() {
   return <AutoFocusPlugin />;

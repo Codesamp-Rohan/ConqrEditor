@@ -1,36 +1,30 @@
-import { useEffect } from "react";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useEffect } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-import {
-    $getRoot,
-    $createParagraphNode,
-    $createTextNode,
-} from "lexical";
+import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical';
 
 export default function ImportPlugin({ content }) {
-    const [editor] = useLexicalComposerContext();
+  const [editor] = useLexicalComposerContext();
 
-    useEffect(() => {
-        if (!content) return;
+  useEffect(() => {
+    if (!content) return;
 
-        editor.update(() => {
-            const root = $getRoot();
+    editor.update(() => {
+      const root = $getRoot();
 
-            root.clear();
+      root.clear();
 
-            const lines = content.split("\n");
+      const lines = content.split('\n');
 
-            lines.forEach((line) => {
-                const paragraph = $createParagraphNode();
+      lines.forEach((line) => {
+        const paragraph = $createParagraphNode();
 
-                paragraph.append(
-                    $createTextNode(line)
-                );
+        paragraph.append($createTextNode(line));
 
-                root.append(paragraph);
-            });
-        });
-    }, [content, editor]);
+        root.append(paragraph);
+      });
+    });
+  }, [content, editor]);
 
-    return null;
+  return null;
 }

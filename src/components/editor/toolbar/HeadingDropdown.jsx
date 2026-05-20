@@ -1,20 +1,16 @@
-"use client";
+'use client';
 
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
 import {
   $getSelection,
   $isRangeSelection,
   $createParagraphNode,
-} from "lexical";
+} from 'lexical';
 
-import {
-  $createHeadingNode,
-} from "@lexical/rich-text";
+import { $createHeadingNode } from '@lexical/rich-text';
 
-import {
-  $setBlocksType,
-} from "@lexical/selection";
+import { $setBlocksType } from '@lexical/selection';
 
 export default function HeadingDropdown() {
   const [editor] = useLexicalComposerContext();
@@ -24,14 +20,10 @@ export default function HeadingDropdown() {
       const selection = $getSelection();
 
       if ($isRangeSelection(selection)) {
-        if (headingSize === "paragraph") {
-          $setBlocksType(selection, () =>
-            $createParagraphNode()
-          );
+        if (headingSize === 'paragraph') {
+          $setBlocksType(selection, () => $createParagraphNode());
         } else {
-          $setBlocksType(selection, () =>
-            $createHeadingNode(headingSize)
-          );
+          $setBlocksType(selection, () => $createHeadingNode(headingSize));
         }
       }
     });

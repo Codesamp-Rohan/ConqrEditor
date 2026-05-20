@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-@layer base {
   :root {
     /* Core Colors */
-    --background: #ffffff;
-    --foreground: #f6f6f6;
+    --background: #F8F2F0;
+    --foreground: #FEFCF6;
 
     --card: #ffffff;
     --card-foreground: #242424;
@@ -26,15 +25,24 @@
 
     --border: #e4e4e7;
     --border-bold: #d4d4d8;
+    --border-muted: #fff;
     --input: #e4e4e7;
     --ring: #09090b;
 
     --radius: 1rem;
 
+    --hover: #ececec;
+
     /* Typography */
     --text-primary: #444444;
     --text-secondary: #999999;
     --text-muted: #71717a;
+    --text-conqr: #0c4160;
+
+    --conqr-primary: #F8CD9F;
+    --conqr-muted: #fae3ca;
+    --conqr-secondary: #0C4160;
+    --conqr-light: #F8CD9F77;
   }
 
   .dark {
@@ -63,6 +71,8 @@
     --input: #27272a;
     --ring: #d4d4d8;
 
+    --hover: #18181b;
+
     /* Typography */
     --text-primary: #fafafa;
     --text-secondary: #d4d4d8;
@@ -89,38 +99,32 @@
   }
 
   h1 {
-    font-size: 1.8rem !important;
     font-weight: 700 !important;
     color: var(--text-primary) !important;
     border-bottom: 1px solid var(--border) !important;
   }
 
   h2 {
-    font-size: 1.45rem !important;
     font-weight: 650 !important;
     color: var(--text-primary) !important;
   }
 
   h3 {
-    font-size: 1.2rem !important;
     font-weight: 600 !important;
     color: var(--text-primary) !important;
   }
 
   h4 {
-    font-size: 1rem !important;
     font-weight: 600 !important;
     color: var(--text-primary) !important;
   }
 
   h5 {
-    font-size: 0.9rem !important;
     font-weight: 500 !important;
     color: var(--text-primary) !important;
   }
 
   h6 {
-    font-size: 0.78rem !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.06em !important;
@@ -128,12 +132,10 @@
   }
 
   p {
-    font-size:  16px !important;
-    line-height: 1.7 !important;
-    font-weight: 400 !important;
-    color: var(--text-secondary) !important;
-    margin: 0.3rem 0 !important;
-  }
+  line-height: 1.7;
+  font-weight: 400;
+  margin: 0.3rem 0;
+}
 
   strong {
     color: var(--text-primary) !important;
@@ -175,7 +177,6 @@ ul {
 
   code {
     color: var(--text-primary) !important;
-    font-size: 0.82rem !important;
   }
 
   pre {
@@ -202,48 +203,59 @@ ul {
   a:hover {
     opacity: 0.75 !important;
   }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f1115;
-    --foreground: #171923;
-
-    --text-primary: #f3f4f6;
-    --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
-
-    --border: #262b36;
-    --border-light: #1f2937;
-
-    --accent: #3b82f6;
-    --accent-hover: #2563eb;
-
-    --muted: #1a1d24;
-    --hover: #20242d;
-
-    --success: #22c55e;
-    --warning: #fbbf24;
-    --danger: #ef4444;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.35);
-  }
-}
 
 body {
   background: var(--background);
   color: var(--text-primary);
-
-  font-family: Arial, Helvetica, sans-serif;
-
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/** {*/
-/*  padding: 0;*/
-/*  margin: 0;*/
-/*  box-sizing: border-box;*/
-/*}*/
+select {
+  height: fit-content;
+  padding: 6px 4px;
+}
+
+code, pre {
+  font-family: "Courier New", Courier, monospace;
+}
+
+.editor-content code {
+  background: var(--conqr-light) !important;
+  padding: 0.6rem 1rem !important;
+  border-radius: 8px !important;
+  font-weight: bold;
+  color: var(--hover) !important;
+}
+
+pre {
+  background: var(--background);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+pre code {
+  background: var(--background) !important;
+  padding: 0;
+}
+
+
+
+.editor-content pre {
+  background: var(--background);
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.editor-content code {
+  display: block;
+  padding: 0.5rem;
+  background: var(--input);
+  border-radius: var(--radius);
+  color: var(--conqr-secondary) !important;
+  font-weight: 700 !important;
+}

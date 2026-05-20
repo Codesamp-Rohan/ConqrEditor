@@ -37,10 +37,12 @@
     --text-primary: #444444;
     --text-secondary: #999999;
     --text-muted: #71717a;
+    --text-conqr: #0c4160;
 
     --conqr-primary: #F8CD9F;
     --conqr-muted: #fae3ca;
     --conqr-secondary: #0C4160;
+    --conqr-light: #F8CD9F77;
   }
 
   .dark {
@@ -132,7 +134,6 @@
   p {
   line-height: 1.7;
   font-weight: 400;
-  color: var(--text-secondary);
   margin: 0.3rem 0;
 }
 
@@ -221,11 +222,11 @@ code, pre {
 }
 
 .editor-content code {
-  background: var(--conqr-muted) !important;
+  background: var(--conqr-light) !important;
   padding: 0.6rem 1rem !important;
   border-radius: 8px !important;
   font-weight: bold;
-  color: var(--text-primary) !important;
+  color: var(--hover) !important;
 }
 
 pre {
@@ -255,4 +256,6 @@ pre code {
   padding: 0.5rem;
   background: var(--input);
   border-radius: var(--radius);
+  color: var(--conqr-secondary) !important;
+  font-weight: 700 !important;
 }

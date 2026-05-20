@@ -19,7 +19,7 @@ const theme = {
     },
     quote:
         "border-l-4 border-[var(--border)] pl-4 italic text-[--text-secondary]",
-    code: "bg-[var(--background)] text-[#d4d4d4] px-1 py-0.5 rounded font-mono text-sm",
+    code: "bg-[var(--background)] !text-[var(--conqr-secondary)] px-1 py-0.5 rounded font-mono text-sm",
     codeHighlight: {
         keyword: "text-[#c586c0]",
         string: "text-[#ce9178]",
@@ -28,7 +28,7 @@ const theme = {
         punctuation: "text-[#d4d4d4]",
     },
     codeBlock:
-        "editor-content relative block overflow-x-auto rounded-2xl px-4 py-4 my-4 font-mono text-[14px] leading-6 text-[#e5e7eb]",
+        "editor-content relative block overflow-x-auto rounded-2xl px-4 py-4 my-4 font-mono text-[14px] leading-6 !text-[var(--conqr-secondary)]",
 };
 
 export default theme;

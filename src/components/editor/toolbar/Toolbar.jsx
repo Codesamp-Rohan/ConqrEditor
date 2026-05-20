@@ -17,6 +17,7 @@ import FontSizeDropdown from "./FontSizeDropdown";
 import {$getSelectionStyleValueForProperty} from "@lexical/selection";
 import HighlightPicker from "./HighlightPicker";
 import FontWeightDropdown from "./FontWeightDropdown";
+import { Divider } from "@/components/ui/Divider";
 
 export default function Toolbar() {
     const [editor] = useLexicalComposerContext();
@@ -127,7 +128,7 @@ export default function Toolbar() {
             >
                 <Underline size={14} />
             </ToolbarButton>
-<div className="mx-1 h-6 w-px bg-[var(--border)]" />
+            <Divider />
             <ToolbarButton
   onClick={() => {
     editor.dispatchCommand(
@@ -149,7 +150,7 @@ export default function Toolbar() {
 >
   <ListOrdered size={14} />
 </ToolbarButton>
-    <div className="mx-1 h-6 w-px bg-[var(--border)]" />
+                <Divider />
             <ToolbarButton
                 onClick={() => {
                     editor.update(() => {
@@ -180,7 +181,7 @@ export default function Toolbar() {
             >
                 <Code2 size={14} />
             </ToolbarButton>
-    <div className="mx-1 h-6 w-px bg-[var(--border)]" />
+                <Divider />
             <ToolbarButton
             active={alignment === "left"}
   onClick={() => {
@@ -228,7 +229,7 @@ active={alignment === "justify"}
 >
   <AlignJustify size={14} />
 </ToolbarButton>
-    <div className="mx-1 h-6 w-px bg-[var(--border)]" />
+                <Divider />
 
     {/* Colour */}
     <div className="relative">
@@ -321,7 +322,7 @@ setShowHighlights(false);
   )}
 </div>
 
-    <div className="mx-1 h-6 w-px bg-[var(--border)]" />
+                <Divider />
 
 
 {/* Size Dropdown */}

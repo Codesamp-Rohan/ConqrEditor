@@ -124,7 +124,7 @@ export default function BlockActions({position, activeBlock,  setDraggedBlock}) 
     );
   }
 }}
-                className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--hover)] hover:text-[var(--text-primary)]"
+                className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-move"
             >
                 <GripVertical size={16} />
             </button>
@@ -136,7 +136,7 @@ export default function BlockActions({position, activeBlock,  setDraggedBlock}) 
 
                         setOpen((prev) => !prev);
                     }}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--hover)] hover:text-[var(--text-primary)]"
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-pointer"
                 >
                     <Plus size={16} />
                 </button>

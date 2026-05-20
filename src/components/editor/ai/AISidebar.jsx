@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { askGemini } from '@/lib/ai/gemini';
 import { useSettingsStore } from '@/store/settingsStore';
 
+
 export default function AISidebar() {
   const selectedText = useAIStore((state) => state.selectedText);
   const setAIResponse = useAIStore((state) => state.setAIResponse);
@@ -20,16 +21,16 @@ export default function AISidebar() {
   );
 
   async function handleRewrite() {
-  if (!selectedText || !prompt) return;
+    if (!selectedText || !prompt) return;
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const apiKey = useSettingsStore.getState().geminiApiKey;
+      const apiKey = useSettingsStore.getState().geminiApiKey;
 
-    const result = await askGemini({
-      apiKey,
-      prompt: `
+      const result = await askGemini({
+        apiKey,
+        prompt: `
 You are an AI writing assistant inside Conqr Editor.
 
 User instruction:
@@ -42,23 +43,23 @@ ${selectedText}
 
 Return ONLY the rewritten result.
 `,
-    });
+      });
 
-    setPendingSuggestion(result);
+      setPendingSuggestion(result);
 
-    setPrompt('');
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
+      setPrompt('');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
-}   
 
   return (
     <div
-  className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] bg-[var(--conqr-muted)] border-l border-[var(--border-muted)] bg-[--background-secondary] flex flex-col overflow-hidden"
-  style={{ borderRadius: '0 .5rem .5rem 0' }}
->
+      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] bg-[var(--conqr-muted)] border-l border-[var(--border-muted)] bg-[--background-secondary] flex flex-col overflow-hidden"
+      style={{ borderRadius: '0 .5rem .5rem 0' }}
+    >
       {/* Header */}
       <div className="p-1 border-b border-[var(--border-muted)] flex items-center justify-between">
         <h2 className="font-semibold text-sm pl-3">Conqr AI</h2>
@@ -98,14 +99,16 @@ Return ONLY the rewritten result.
                     setAIResponse(pendingSuggestion);
                     clearPendingSuggestion();
                   }}
-                  className="flex-1 rounded-lg bg-[var(--conqr-secondary)] w-fit px-2 py-1 text-xs text-white" style={{ width: 'fit-content' }}
+                  className="flex-1 rounded-lg bg-[var(--conqr-secondary)] w-fit px-2 py-1 text-xs text-white"
+                  style={{ width: 'fit-content' }}
                 >
                   <Check size={10} />
                 </button>
 
                 <button
                   onClick={clearPendingSuggestion}
-                  className="flex-1 rounded-lg border border-[var(--border)] px-2 py-1 text-xs !bg-red-500 text-white" style={{ backgroundColor: 'red', width: 'fit-content' }}
+                  className="flex-1 rounded-lg border border-[var(--border)] px-2 py-1 text-xs !bg-red-500 text-white"
+                  style={{ backgroundColor: 'red', width: 'fit-content' }}
                 >
                   <X size={10} />
                 </button>
@@ -128,7 +131,8 @@ Return ONLY the rewritten result.
               }
             }}
             placeholder="Ask Conqr.ai..."
-            className="w-full rounded-md border !border-[var(--hover)] bg-transparent px-2 !mb-0 text-[11px] py-1 font-mono outline-none focus:border-[var(--primary)]" style={{ marginBlockEnd: 0 }}
+            className="w-full rounded-md border !border-[var(--hover)] bg-transparent px-2 !mb-0 text-[11px] py-1 font-mono outline-none focus:border-[var(--primary)]"
+            style={{ marginBlockEnd: 0 }}
           />
 
           <button

@@ -18,17 +18,24 @@ import { ibmPlex } from '@/lib/fonts';
 import editorConfig from './core/config';
 import Toolbar from './toolbar/Toolbar';
 import LocalStoragePlugin from '@/components/editor/plugins/LocalStoragePlugin';
+import ClearEditorPlugin from '@/components/editor/plugins/ClearEditorPlugin';
 import { Navbar } from '../Navbar';
 import AISidebar from './ai/AISidebar';
 
 export default function Editor() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [clearTrigger, setClearTrigger] = useState(0);
   const { loading } = useAIStore();
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className="min-h-screen bg-[var(--conqr-primary)] flex flex-col items-center">
-        <Navbar setSettingsOpen={setSettingsOpen} />
+        <Navbar
+          setSettingsOpen={setSettingsOpen}
+          onClear={() => {
+            setClearTrigger((prev) => prev + 1);
+          }}
+        />
         <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] p-4">
           {/* Main Editor */}
           <div
@@ -43,6 +50,7 @@ export default function Editor() {
             <BlockHoverPlugin />
             <SelectionPlugin />
             <ReplaceSelectionPlugin />
+            <ClearEditorPlugin clearTrigger={clearTrigger} />
             <RichTextPlugin
               contentEditable={
                 <ContentEditable

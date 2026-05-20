@@ -24,6 +24,7 @@ import { useSettingsStore } from '@/store/settingsStore';
 import { $getRoot } from 'lexical';
 import { useRef } from 'react';
 import { useAIStore } from '@/store/aiStore';
+import { AI_PROMPTS } from '@/lib/ai/prompts';
 
 export default function SlashCommandPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -51,15 +52,15 @@ export default function SlashCommandPlugin() {
 
     switch (type) {
       case 'ai-summarize':
-        prompt = `Summarize this content:\n\n${text}`;
+        prompt = AI_PROMPTS.summarize(text);
         break;
 
       case 'ai-explain':
-        prompt = `Explain this content in simple terms:\n\n${text}`;
+        prompt = AI_PROMPTS.explain(text);
         break;
 
       case 'ai-flashcards':
-        prompt = `Create flashcards from this content:\n\n${text}`;
+        prompt = AI_PROMPTS.flashcards(text);
         break;
 
       default:

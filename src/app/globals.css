@@ -1,159 +1,172 @@
 @import "tailwindcss";
 
-  :root {
-    /* Core Colors */
-    --background: #F8F2F0;
-    --foreground: #FEFCF6;
+:root {
+  /* Core Colors */
+  --background: #f8f2f0;
+  --foreground: #fefcf6;
 
-    --card: #ffffff;
-    --card-foreground: #242424;
+  --white: #f0f0f0;
+  --white-secondary: #ebebeb;
 
-    --popover: #ffffff;
-    --popover-foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #242424;
 
-    --primary: #09090b;
-    --primary-foreground: #fafafa;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
 
-    --secondary: #f4f4f5;
-    --secondary-foreground: #18181b;
+  --primary: #09090b;
+  --primary-foreground: #fafafa;
 
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
 
-    --accent: #f4f4f5;
-    --accent-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
 
-    --border: #e4e4e7;
-    --border-bold: #d4d4d8;
-    --border-muted: #fff;
-    --input: #e4e4e7;
-    --ring: #09090b;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
 
-    --radius: 1rem;
+  --border: #e4e4e7;
+  --border-bold: #d4d4d8;
+  --border-muted: #fff;
+  --input: #e4e4e7;
+  --ring: #09090b;
 
-    --hover: #ececec;
+  --radius: 1rem;
 
-    /* Typography */
-    --text-primary: #444444;
-    --text-secondary: #999999;
-    --text-muted: #71717a;
-    --text-conqr: #0c4160;
+  --hover: #ececec;
 
-    --conqr-primary: #F8CD9F;
-    --conqr-muted: #fae3ca;
-    --conqr-secondary: #0C4160;
-    --conqr-light: #F8CD9F77;
-  }
+  /* Typography */
+  --text-primary: #444444;
+  --text-secondary: #999999;
+  --text-muted: #71717a;
+  --text-conqr: #0c4160;
 
-  .dark {
-    --background: #09090b;
-    --foreground: #101013;
+  --conqr-primary: #f8cd9f;
+  --conqr-muted: #fae3ca;
+  --conqr-secondary: #0c4160;
+  --conqr-light: #f8cd9f77;
 
-    --card: #09090b;
-    --card-foreground: #fafafa;
+  /* Scrollbar */
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #888;
+  --scrollbar-thumb-hover: #555;
+}
 
-    --popover: #09090b;
-    --popover-foreground: #fafafa;
+.dark {
+  --background: #09090b;
+  --foreground: #101013;
 
-    --primary: #fafafa;
-    --primary-foreground: #09090b;
+  --card: #09090b;
+  --card-foreground: #fafafa;
 
-    --secondary: #18181b;
-    --secondary-foreground: #fafafa;
+  --popover: #09090b;
+  --popover-foreground: #fafafa;
 
-    --muted: #18181b;
-    --muted-foreground: #a1a1aa;
+  --primary: #fafafa;
+  --primary-foreground: #09090b;
 
-    --accent: #18181b;
-    --accent-foreground: #fafafa;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
 
-    --border: #27272a;
-    --input: #27272a;
-    --ring: #d4d4d8;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
 
-    --hover: #18181b;
+  --accent: #18181b;
+  --accent-foreground: #fafafa;
 
-    /* Typography */
-    --text-primary: #fafafa;
-    --text-secondary: #d4d4d8;
-    --text-muted: #a1a1aa;
-  }
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #d4d4d8;
 
-  body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+  --hover: #18181b;
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0 !important;
-    color: var(--text-primary) !important;
-    line-height: 1.25 !important;
-    letter-spacing: -0.02em !important;
-  }
+  /* Typography */
+  --text-primary: #fafafa;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
 
-  h1 {
-    font-weight: 700 !important;
-    color: var(--text-primary) !important;
-    border-bottom: 1px solid var(--border) !important;
-  }
+  /* Scrollbar */
+  --scrollbar-track: #101013;
+  --scrollbar-thumb: #3f3f46;
+  --scrollbar-thumb-hover: #52525b;
+}
 
-  h2 {
-    font-weight: 650 !important;
-    color: var(--text-primary) !important;
-  }
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
-  h3 {
-    font-weight: 600 !important;
-    color: var(--text-primary) !important;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+}
 
-  h4 {
-    font-weight: 600 !important;
-    color: var(--text-primary) !important;
-  }
+h1 {
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
 
-  h5 {
-    font-weight: 500 !important;
-    color: var(--text-primary) !important;
-  }
+h2 {
+  font-weight: 650 !important;
+  color: var(--text-primary) !important;
+}
 
-  h6 {
-    font-weight: 500 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
-    color: var(--text-primary) !important;
-  }
+h3 {
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
 
-  p {
+h4 {
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+h5 {
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+}
+
+h6 {
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--text-primary) !important;
+}
+
+p {
   line-height: 1.7;
   font-weight: 400;
   margin: 0.3rem 0;
 }
 
-  strong {
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-  }
+strong {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
 
-  em {
-    color: var(--text-secondary) !important;
-  }
+em {
+  color: var(--text-secondary) !important;
+}
 
-  ul,
-  ol {
-    margin-left: 1.1rem !important;
-    margin-top: 0.35rem !important;
-    margin-bottom: 0.35rem !important;
-  }
+ul,
+ol {
+  margin-left: 1.1rem !important;
+  margin-top: 0.35rem !important;
+  margin-bottom: 0.35rem !important;
+}
 
-  ol {
+ol {
   list-style-type: decimal;
 }
 
@@ -161,48 +174,48 @@ ul {
   list-style-type: disc;
 }
 
-  li {
-    line-height: 1.65 !important;
-    color: var(--text-secondary) !important;
-    margin-bottom: 0.15rem !important;
-  }
+li {
+  line-height: 1.65 !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0.15rem !important;
+}
 
-  blockquote {
-    border-left: 2px solid var(--border) !important;
-    padding-left: 0.8rem !important;
-    margin: 0.8rem 0 !important;
-    color: var(--text-muted) !important;
-    font-style: italic !important;
-  }
+blockquote {
+  border-left: 2px solid var(--border) !important;
+  padding-left: 0.8rem !important;
+  margin: 0.8rem 0 !important;
+  color: var(--text-muted) !important;
+  font-style: italic !important;
+}
 
-  code {
-    color: var(--text-primary) !important;
-  }
+code {
+  color: var(--text-primary) !important;
+}
 
-  pre {
-    background: var(--background) !important;
-    padding: 0.9rem !important;
-    border-radius: 0.8rem !important;
-    overflow-x: auto !important;
-    margin: 0.8rem 0 !important;
-    border: 1px solid var(--border) !important;
-  }
+pre {
+  background: var(--background) !important;
+  padding: 0.9rem !important;
+  border-radius: 0.8rem !important;
+  overflow-x: auto !important;
+  margin: 0.8rem 0 !important;
+  border: 1px solid var(--border) !important;
+}
 
-  hr {
-    border: none !important;
-    border-top: 1px solid var(--border) !important;
-    margin: 1rem 0 !important;
-  }
+hr {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 1rem 0 !important;
+}
 
-  a {
-    color: var(--text-primary) !important;
-    text-decoration: none !important;
-    transition: opacity 0.2s ease !important;
-  }
+a {
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease !important;
+}
 
-  a:hover {
-    opacity: 0.75 !important;
-  }
+a:hover {
+  opacity: 0.75 !important;
+}
 
 body {
   background: var(--background);
@@ -217,13 +230,14 @@ select {
   padding: 6px 4px;
 }
 
-code, pre {
+code,
+pre {
   font-family: "Courier New", Courier, monospace;
 }
 
 .editor-content code {
   background: var(--conqr-light) !important;
-  padding: 0.6rem 1rem !important;
+  padding: 0.3rem 0.5rem !important;
   border-radius: 8px !important;
   font-weight: bold;
   color: var(--hover) !important;
@@ -242,8 +256,6 @@ pre code {
   padding: 0;
 }
 
-
-
 .editor-content pre {
   background: var(--background);
   color: var(--text-primary);
@@ -258,4 +270,9 @@ pre code {
   border-radius: var(--radius);
   color: var(--conqr-secondary) !important;
   font-weight: 700 !important;
+}
+
+* {
+  scrollbar-color: var(--conqr-secondary) #00000000 !important;
+  scrollbar-width: thin;
 }

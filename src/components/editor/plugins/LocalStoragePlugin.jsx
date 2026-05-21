@@ -1,63 +1,42 @@
-import { useEffect } from "react";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useEffect } from 'react';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-const STORAGE_KEY = "editor-content";
+const STORAGE_KEY = 'editor-content';
 
 export default function LocalStoragePlugin() {
-    const [editor] =
-        useLexicalComposerContext();
+  const [editor] = useLexicalComposerContext();
 
-    useEffect(() => {
-        const saved =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
 
-        if (!saved) return;
+    if (!saved) return;
 
-        try {
-            const parsed =
-                JSON.parse(saved);
+    try {
+      const parsed = JSON.parse(saved);
 
-            const editorState =
-                editor.parseEditorState(
-                    parsed
-                );
+      const editorState = editor.parseEditorState(parsed);
 
-            editor.setEditorState(
-                editorState
-            );
-        } catch (err) {
-            console.error(
-                "Failed to restore editor:",
-                err
-            );
-        }
-    }, [editor]);
+      editor.setEditorState(editorState);
+    } catch (err) {
+      console.error('Failed to restore editor:', err);
+    }
+  }, [editor]);
 
-    useEffect(() => {
-        let timeout;
+  useEffect(() => {
+    let timeout;
 
-        return editor.registerUpdateListener(
-            ({ editorState }) => {
-                clearTimeout(timeout);
+    return editor.registerUpdateListener(({ editorState }) => {
+      clearTimeout(timeout);
 
-                timeout = setTimeout(() => {
-                    editorState.read(() => {
-                        const json =
-                            editorState.toJSON();
+      timeout = setTimeout(() => {
+        editorState.read(() => {
+          const json = editorState.toJSON();
 
-                        localStorage.setItem(
-                            STORAGE_KEY,
-                            JSON.stringify(
-                                json
-                            )
-                        );
-                    });
-                }, 500);
-            }
-        );
-    }, [editor]);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+        });
+      }, 500);
+    });
+  }, [editor]);
 
-    return null;
+  return null;
 }

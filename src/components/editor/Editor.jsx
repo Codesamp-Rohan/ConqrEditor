@@ -32,7 +32,7 @@ export default function Editor() {
     <LexicalComposer initialConfig={editorConfig}>
       {loading && (
         <div
-          className="pointer-events-none fixed flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--conqr-secondary)] px-4 py-2 text-sm shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-200"
+          className="pointer-events-none fixed flex items-center gap-2 rounded-4xl border border-[var(--border)] bg-[var(--conqr-secondary)] px-4 py-1 text-sm shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-200"
           style={{
             position: 'flxed',
             bottom: '1rem',

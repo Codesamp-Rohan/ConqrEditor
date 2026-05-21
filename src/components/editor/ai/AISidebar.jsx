@@ -10,6 +10,11 @@ export default function AISidebar() {
   const [prompt, setPrompt] = useState('');
 
   const pendingSuggestion = useAIStore((state) => state.pendingSuggestion);
+  const clearConversation =
+  useAIStore(
+    (state) =>
+      state.clearConversation
+  );
   const setPendingSuggestion = useAIStore(
     (state) => state.setPendingSuggestion
   );
@@ -115,7 +120,7 @@ ${prompt}
       {/* Header */}
       <div className="p-1 flex items-center justify-between">
         <h2 className="font-semibold text-sm pl-3">Conqr AI</h2>
-        <button className="flex items-center gap-2 py-1 px-2 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-sm bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]">
+        <button  onClick={() => {clearConversation();clearPendingSuggestion();setPrompt("");}} className="flex items-center gap-2 py-1 px-2 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-sm bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]">
           <Plus size={14} />
           New Chat
         </button>
@@ -147,10 +152,10 @@ ${prompt}
                 {messages.map((message, index) => (
                   <div
                     key={index}
-                    className={`rounded-md border w-[90%] whitespace-pre-wrap ${
+                    className={`!rounded-none border w-[90%] whitespace-pre-wrap ${
                       message.role === 'user'
-                        ? 'ml-auto bg-[var(--conqr-secondary)] text-white border-transparent'
-                        : 'bg-[var(--white)] text-[var(--conqr-secondary)]border-1 border-[#ccc]'
+                        ? 'ml-auto bg-[#0c416044] text-[var(--conqr-secondary)] border-y-0 border-l-0 border-r-[var(--conqr-secondary)] border-r-4'
+                        : 'bg-[var(--white)] text-[var(--conqr-secondary)] border-1 border-l-4 !text-[#777] border-[#ccc]'
                     }`}
                     style={{
                       padding: '.5rem',
@@ -179,7 +184,7 @@ ${prompt}
                       className="text-[11px] !mt-2"
                       style={{ margin: 0, lineHeight: '110%' }}
                     >
-                      {message.content}
+                      {message.content?.replace(/MESSAGE:/gi,"")?.trim()}
                     </p>
                   </div>
                 ))}
@@ -187,7 +192,7 @@ ${prompt}
             </div>
           )}
           {/* AI Suggestion */}
-          {pendingSuggestion && (
+          {pendingSuggestion && pendingSuggestion !== '---' && (
             <div>
               <div className="mb-2 !text-[8px] uppercase text-[--text-muted]">
                 Suggestion

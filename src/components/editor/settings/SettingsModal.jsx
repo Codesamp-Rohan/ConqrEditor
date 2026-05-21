@@ -61,7 +61,11 @@ export default function SettingsModal({ open, onClose }) {
               onClick={handleCopy}
               className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition"
             >
-              {copied ? <Check size={18} style={{ color: '#0ba300' }} /> : <Copy size={18} />}
+              {copied ? (
+                <Check size={18} style={{ color: '#0ba300' }} />
+              ) : (
+                <Copy size={18} />
+              )}
             </button>
 
             <button
@@ -81,19 +85,18 @@ export default function SettingsModal({ open, onClose }) {
           Know about Gemini API key?
         </a>
 
-        <div className='px-2 pb-2'>
-        <button
-          onClick={() => {
-            setGeminiApiKey(value);
+        <div className="px-2 pb-2">
+          <button
+            onClick={() => {
+              setGeminiApiKey(value);
 
-            onClose();
-          }}
-          className="mt-5 w-full rounded-md bg-[var(--conqr-secondary)] px-2 py-2 text-sm font-medium font-mono text-white transition-all hover:opacity-90 cursor-pointer"
-        >
-          Save Settings
-        </button>
+              onClose();
+            }}
+            className="mt-5 w-full rounded-md bg-[var(--conqr-secondary)] px-2 py-2 text-sm font-medium font-mono text-white transition-all hover:opacity-90 cursor-pointer"
+          >
+            Save Settings
+          </button>
         </div>
-
       </div>
     </div>
   );

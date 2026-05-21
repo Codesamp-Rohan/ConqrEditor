@@ -1,38 +1,27 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import {
-    $getRoot,
-} from "lexical";
+import { $getRoot } from 'lexical';
 
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-import { useAIStore } from "@/store/aiStore";
+import { useAIStore } from '@/store/aiStore';
 
 export default function DocumentTrackerPlugin() {
-    const [editor] =
-        useLexicalComposerContext();
+  const [editor] = useLexicalComposerContext();
 
-    const setDocumentText =
-        useAIStore(
-            (state) =>
-                state.setDocumentText
-        );
+  const setDocumentText = useAIStore((state) => state.setDocumentText);
 
-    useEffect(() => {
-        return editor.registerUpdateListener(
-            ({ editorState }) => {
-                editorState.read(() => {
-                    const text =
-                        $getRoot()
-                            .getTextContent();
+  useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const text = $getRoot().getTextContent();
 
-                    setDocumentText(text);
-                });
-            }
-        );
-    }, [editor]);
+        setDocumentText(text);
+      });
+    });
+  }, [editor]);
 
-    return null;
+  return null;
 }

@@ -11,7 +11,7 @@ import FloatingToolbarPlugin from '@/components/editor/plugins/FloatingToolbarPl
 import BlockHoverPlugin from '@/components/editor/plugins/BlockHoverPlugin';
 import SelectionPlugin from '@/components/editor/plugins/SelectionPlugin';
 import ReplaceSelectionPlugin from '@/components/editor/plugins/ReplaceSelectionPlugin';
-import DocumentTrackerPlugin from "@/components/editor/plugins/DocumentTrackerPlugin";
+import DocumentTrackerPlugin from '@/components/editor/plugins/DocumentTrackerPlugin';
 import { useState } from 'react';
 import SettingsModal from './settings/SettingsModal';
 import { useAIStore } from '@/store/aiStore';
@@ -30,6 +30,25 @@ export default function Editor() {
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
+      {loading && (
+        <div
+          className="pointer-events-none fixed flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--conqr-secondary)] px-4 py-2 text-sm shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-200"
+          style={{
+            position: 'flxed',
+            bottom: '1rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: 'fit-content',
+            zIndex: 999,
+          }}
+        >
+          <div className="h-2 w-2 rounded-full bg-[var(--conqr-muted)] animate-pulse" />
+
+          <p style={{ color: 'var(--conqr-muted)' }}>
+            Generating AI response...
+          </p>
+        </div>
+      )}
       <div className="min-h-screen bg-[var(--conqr-primary)] flex flex-col items-center">
         <Navbar
           setSettingsOpen={setSettingsOpen}
@@ -40,7 +59,7 @@ export default function Editor() {
         <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] p-4">
           {/* Main Editor */}
           <div
-            className="relative border border-[var(--border)] overflow-auto w-screen h-screen max-h-[90vh] max-w-[1080px] bg-[var(--conqr-muted)]"
+            className="relative border border-[var(--border)] overflow-auto w-screen h-screen max-h-[90vh] max-w-[1080px] bg-[var(--white)]"
             style={{ borderRadius: '.5rem 0 0 .5rem' }}
           >
             <Toolbar />
@@ -76,15 +95,6 @@ export default function Editor() {
               open={settingsOpen}
               onClose={() => setSettingsOpen(false)}
             />
-            {loading && (
-              <div className="pointer-events-none fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--foreground)] px-4 py-2 text-sm shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-bottom-2 duration-200">
-                <div className="h-2 w-2 rounded-full bg-[var(--primary)] animate-pulse" />
-
-                <span className="text-[var(--text-secondary)]">
-                  Generating AI response...
-                </span>
-              </div>
-            )}
           </div>
           <AISidebar />
         </div>

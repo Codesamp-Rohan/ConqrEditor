@@ -22,7 +22,7 @@ export const useAIStore = create((set) => ({
       messages: [],
     }),
   setDocumentText: (text) =>
-      set({
-        documentText: text,
-      }),
+    set({
+      documentText: text,
+    }),
 }));

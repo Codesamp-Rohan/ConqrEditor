@@ -1,5 +1,5 @@
 import { useAIStore } from '@/store/aiStore';
-import { Plus, Check, X } from 'lucide-react';
+import { Plus, Check, X, Brain, Sparkle } from 'lucide-react';
 import { useState } from 'react';
 import { askGemini } from '@/lib/ai/gemini';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -18,44 +18,36 @@ export default function AISidebar() {
   const clearPendingSuggestion = useAIStore(
     (state) => state.clearPendingSuggestion
   );
-    const documentText =
-        useAIStore(
-            (state) =>
-                state.documentText
-        );
-    const { messages, addMessage } = useAIStore();
+  const documentText = useAIStore((state) => state.documentText);
+  const { messages, addMessage } = useAIStore();
 
   async function handleRewrite() {
-      if (!prompt.trim()) return;
+    if (!prompt.trim()) return;
 
     try {
       setLoading(true);
 
       const apiKey = useSettingsStore.getState().geminiApiKey;
-        const updatedMessages = [
-            ...messages,
-            {
-                role: "user",
-                content: prompt,
-            },
-        ];
+      const updatedMessages = [
+        ...messages,
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ];
 
-        addMessage({
-            role: "user",
-            content: prompt,
-        });
+      addMessage({
+        role: 'user',
+        content: prompt,
+      });
 
-        const history =
-            updatedMessages
-                .map(
-                    (msg) =>
-                        `${msg.role}: ${msg.content}`
-                )
-                .join("\n");
+      const history = updatedMessages
+        .map((msg) => `${msg.role}: ${msg.content}`)
+        .join('\n');
 
       const result = await askGemini({
         apiKey,
-          prompt: `You are a conversational AI assistant inside a professional writing editor.
+        prompt: `You are a conversational AI assistant inside a professional writing editor.
 IMPORTANT RULES:
 
 - If the user asks to rewrite, improve, transform, capitalize, shorten, expand, or modify text:
@@ -91,36 +83,21 @@ User:
 ${prompt}
 `,
       });
-        const messageMatch =
-            result.match(
-                /MESSAGE:\s*([\s\S]*?)SUGGESTION:/i
-            );
+      const messageMatch = result.match(/MESSAGE:\s*([\s\S]*?)SUGGESTION:/i);
 
-        const suggestionMatch =
-            result.match(
-                /SUGGESTION:\s*([\s\S]*)/i
-            );
+      const suggestionMatch = result.match(/SUGGESTION:\s*([\s\S]*)/i);
 
-        const message =
-            messageMatch?.[1]?.trim() ||
-            result;
+      const message = messageMatch?.[1]?.trim() || result;
 
-        const suggestion =
-            suggestionMatch?.[1]?.trim() ||
-            "";
-        addMessage({
-            role: "assistant",
-            content: message,
-        });
+      const suggestion = suggestionMatch?.[1]?.trim() || '';
+      addMessage({
+        role: 'assistant',
+        content: message,
+      });
 
-        if (
-            suggestion &&
-            suggestion !== message
-        ) {
-            setPendingSuggestion(
-                suggestion
-            );
-        }
+      if (suggestion && suggestion !== message) {
+        setPendingSuggestion(suggestion);
+      }
 
       setPrompt('');
     } catch (error) {
@@ -132,7 +109,7 @@ ${prompt}
 
   return (
     <div
-      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] bg-[var(--conqr-muted)] border-l border-[var(--border-muted)] flex flex-col overflow-hidden"
+      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] bg-[var(--white-secondary)] border-l border-[var(--border-muted)] flex flex-col overflow-hidden"
       style={{ borderRadius: '0 .5rem .5rem 0' }}
     >
       {/* Header */}
@@ -152,50 +129,74 @@ ${prompt}
               Selected Text
             </div>
 
-            <div className="rounded-md bg-[var(--conqr-primary)] border border-[var(--border)] p-1 text-[11px] whitespace-pre-wrap">
+            <div
+              className="border-l-2 border-l-[#bbb] bg-[#ddd] p-1 text-[11px] whitespace-pre-wrap"
+              style={{ maxHeight: '140px', overflow: 'auto' }}
+            >
               {selectedText || 'No text selected'}
             </div>
           </div>
-            {/* Conversation */}
-            {messages.length > 0 && (
-                <div>
-                    <div className="mb-2 text-[11px] uppercase text-[--text-muted]">
-                        Conversation
-                    </div>
+          {/* Conversation */}
+          {messages.length > 0 && (
+            <div>
+              <p className="mb-2 !text-[8px] uppercase text-[--text-muted]">
+                Conversation
+              </p>
 
-                    <div className="space-y-3">
-                        {messages.map(
-                            (message, index) => (
-                                <div
-                                    key={index}
-                                    className={`rounded-md border p-2 text-[11px] whitespace-pre-wrap ${
-                                        message.role ===
-                                        "user"
-                                            ? "ml-auto bg-[var(--conqr-secondary)] text-white border-transparent"
-                                            : "bg-[var(--conqr-primary)] border-[var(--border)]"
-                                    }`}
-                                >
-                                    <div className="mb-1 text-[9px] uppercase opacity-60">
-                                        {message.role}
-                                    </div>
+              <div className="space-y-3">
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`rounded-md border w-[90%] whitespace-pre-wrap ${
+                      message.role === 'user'
+                        ? 'ml-auto bg-[var(--conqr-secondary)] text-white border-transparent'
+                        : 'bg-[var(--white)] text-[var(--conqr-secondary)]border-1 border-[#ccc]'
+                    }`}
+                    style={{
+                      padding: '.5rem',
+                      marginBottom: '.25rem',
+                      borderRadius:
+                        message.role === 'user'
+                          ? '.5rem .5rem 0 .5rem'
+                          : '.5rem .5rem .5rem 0',
+                    }}
+                  >
+                    <p
+                      className="px-1 flex gap-[.15rem] items-center rounded-md uppercase opacity-60 !text-[6px]"
+                      style={{
+                        fontWeight: 900,
+                        backgroundColor:
+                          message.role === 'user' ? '#ffffff44' : '#00000022',
+                        width: 'fit-content',
+                        margin: 0,
+                      }}
+                    >
+                      {message.role !== 'user' && <Sparkle size={6} />}
+                      {message.role}
+                    </p>
 
-                                    <div>
-                                        {message.content}
-                                    </div>
-                                </div>
-                            )
-                        )}
-                    </div>
-                </div>
-            )}
+                    <p
+                      className="text-[11px] !mt-2"
+                      style={{ margin: 0, lineHeight: '110%' }}
+                    >
+                      {message.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {/* AI Suggestion */}
           {pendingSuggestion && (
             <div>
-              <div className="mb-2 text-[11px] uppercase text-[--text-muted]">
+              <div className="mb-2 !text-[8px] uppercase text-[--text-muted]">
                 Suggestion
               </div>
 
-              <div className="rounded-md bg-[var(--conqr-primary)] border border-[var(--border)] p-1 text-[11px] whitespace-pre-wrap">
+              <div
+                className="border-l-2 border-l-[#bbb] bg-[#ddd] p-1 text-[11px] whitespace-pre-wrap"
+                style={{ maxHeight: '140px', overflow: 'auto' }}
+              >
                 {pendingSuggestion}
               </div>
 
@@ -237,15 +238,16 @@ ${prompt}
               }
             }}
             placeholder="Ask Conqr.ai..."
-            className="w-full rounded-md border !border-[var(--hover)] bg-transparent px-2 !mb-0 text-[11px] py-1 font-mono outline-none focus:border-[var(--primary)]"
+            className="w-full border-b-2 border-b-[#bbb] bg-[#ddd] px-2 !mb-0 text-[11px] py-1 font-mono outline-none focus:border-[var(--primary)]"
             style={{ marginBlockEnd: 0 }}
           />
 
           <button
             onClick={handleRewrite}
-            className="w-fit rounded-lg bg-[var(--conqr-secondary)] px-4 py-1 text-[11px] font-mono text-white hover:opacity-90 transition-opacity cursor-pointer"
+            className="w-fit flex gap-1 items-center rounded-lg bg-[var(--conqr-secondary)] px-2 py-1 text-[11px] font-mono text-white hover:opacity-90 transition-opacity cursor-pointer"
           >
-            {loading ? 'Thinking...' : 'Send'}
+            {loading ? <Check size={11} /> : <Brain size={11} />}
+            {loading ? 'Thinking...' : 'Think'}
           </button>
         </div>
       </div>

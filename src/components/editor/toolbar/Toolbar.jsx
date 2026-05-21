@@ -91,7 +91,7 @@ export default function Toolbar() {
 
   return (
     <div
-      className={`sticky top-0 z-50 flex items-center !gap-[3.5px] p-1 border-b border-b-[var(--border-muted)] bg-[var(--conqr-muted)] shadow-xl shadow-white/20`}
+      className={`sticky top-0 z-50 flex items-center !gap-[3.5px] p-1 border-b border-b-[var(--border-muted)] bg-[var(--white-secondary)] shadow-xl shadow-white/20`}
     >
       <HeadingDropdown />
       <ToolbarButton

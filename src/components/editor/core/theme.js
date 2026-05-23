@@ -19,7 +19,7 @@ const theme = {
   },
   quote:
     'border-l-4 border-[var(--border)] pl-4 italic text-[--text-secondary]',
-  code: 'bg-[var(--background)] !text-[var(--conqr-secondary)] px-1 py-0.5 rounded font-mono text-sm',
+  code: '!text-[var(--conqr-secondary)] px-1 py-0.5 !rounded-none font-mono text-sm',
   codeHighlight: {
     keyword: 'text-[#c586c0]',
     string: 'text-[#ce9178]',

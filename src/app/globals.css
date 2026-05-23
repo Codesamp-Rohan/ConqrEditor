@@ -267,13 +267,14 @@ pre code {
 .editor-content code {
   display: block;
   padding: 0.5rem;
-  background: var(--input);
-  border-radius: var(--radius);
+  background: #e0e0e0 !important;
+  border-radius: 0 !important;
   color: var(--conqr-secondary) !important;
-  font-weight: 700 !important;
+  margin-block: 12px;
+  border-left: 3px solid var(--conqr-secondary) !important;
 }
 
 * {
-  scrollbar-color: var(--conqr-secondary) #00000000 !important;
+  scrollbar-color: #bbbbbb #00000000 !important;
   scrollbar-width: thin;
 }

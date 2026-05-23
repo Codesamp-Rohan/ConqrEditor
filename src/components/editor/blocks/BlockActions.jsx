@@ -75,7 +75,7 @@ export default function BlockActions({
     <div
       style={{
         position: 'fixed',
-        left: position.x,
+        left: position.x + 17,
         top: position.y,
       }}
       className="z-50 flex items-center gap-1"
@@ -96,9 +96,9 @@ export default function BlockActions({
             activeBlock.classList.remove('opacity-50');
           }
         }}
-        className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-move"
+        className="flex h-5 w-5 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-move"
       >
-        <GripVertical size={16} />
+        <GripVertical size={14} />
       </button>
 
       <div className="relative">
@@ -108,9 +108,9 @@ export default function BlockActions({
 
             setOpen((prev) => !prev);
           }}
-          className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-pointer"
+          className="flex h-5 w-5 items-center justify-center rounded-md text-[var(--text-secondary)] transition-all hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] cursor-pointer"
         >
-          <Plus size={16} />
+          <Plus size={14} />
         </button>
 
         {open && (

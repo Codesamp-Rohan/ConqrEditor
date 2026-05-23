@@ -26,7 +26,7 @@ export default function UploadButton({ onLoad }) {
     <>
       <button
         onClick={() => inputRef.current?.click()}
-        className="flex items-center gap-2 py-1 px-2 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-sm bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
+        className="flex items-center gap-2 py-1 px-2 text-[11px] rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-sm bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
       >
         <FileDown size={14} />
         Upload

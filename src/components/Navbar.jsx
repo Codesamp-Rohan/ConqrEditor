@@ -15,7 +15,7 @@ export const Navbar = ({ setSettingsOpen, onClear }) => {
       <div className="flex items-center gap-2">
         <button
           onClick={onClear}
-          className="flex items-center gap-2 rounded-md px-2 py-1 text-sm bg-[var(--foreground)] hover:bg-[var(--conqr-secondary)] cursor-pointer hover:text-[var(--hover)] hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
+          className="flex items-center gap-2 rounded-md px-2 py-1 text-[11px] bg-[var(--foreground)] hover:bg-[var(--conqr-secondary)] cursor-pointer hover:text-[var(--hover)] hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
         >
           <Eraser size={14} />
           Clear
@@ -24,7 +24,7 @@ export const Navbar = ({ setSettingsOpen, onClear }) => {
         <ImportPlugin content={uploadedContent} />
         <button
           onClick={() => setSettingsOpen(true)}
-          className="flex items-center gap-2 rounded-md px-2 py-1 text-sm bg-[var(--foreground)] hover:bg-[var(--conqr-secondary)] cursor-pointer hover:text-[var(--hover)] hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
+          className="flex items-center gap-2 rounded-md px-2 py-1 text-[11px] bg-[var(--foreground)] hover:bg-[var(--conqr-secondary)] cursor-pointer hover:text-[var(--hover)] hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
           style={{ right: "4px", top: "4px", zIndex: 100 }}
         >
           <Bean size={14} />

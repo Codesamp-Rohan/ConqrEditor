@@ -32,7 +32,7 @@ export default function HeadingDropdown() {
   return (
     <select
       onChange={(e) => formatHeading(e.target.value)}
-      className="h-5 rounded-md border border-[var(--border)] bg-[var(--foreground)] px-3 text-sm outline-none"
+      className="h-5 text-[11px] cursor-pointer rounded-md border border-[var(--border)] bg-[var(--foreground)] px-3 text-sm outline-none"
     >
       <option value="paragraph">Paragraph</option>
       <option value="h1">Heading 1</option>

@@ -1,20 +1,17 @@
 import { useAIStore } from '@/store/aiStore';
 import { Plus, Check, X, Brain, Sparkle } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { askGemini } from '@/lib/ai/gemini';
 import { useSettingsStore } from '@/store/settingsStore';
+import { generateAIResponse } from '@/lib/ai';
 
 export default function AISidebar() {
   const selectedText = useAIStore((state) => state.selectedText);
   const setAIResponse = useAIStore((state) => state.setAIResponse);
+  const { provider } = useSettingsStore();
   const [prompt, setPrompt] = useState('');
-
   const pendingSuggestion = useAIStore((state) => state.pendingSuggestion);
-  const clearConversation =
-  useAIStore(
-    (state) =>
-      state.clearConversation
-  );
+  const clearConversation = useAIStore((state) => state.clearConversation);
   const setPendingSuggestion = useAIStore(
     (state) => state.setPendingSuggestion
   );
@@ -25,6 +22,14 @@ export default function AISidebar() {
   );
   const documentText = useAIStore((state) => state.documentText);
   const { messages, addMessage } = useAIStore();
+  const messagesEndRef = useRef(null);
+  const { geminiApiKey, groqApiKey } = useSettingsStore();
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }, [messages, loading, pendingSuggestion]);
 
   async function handleRewrite() {
     if (!prompt.trim()) return;
@@ -50,49 +55,18 @@ export default function AISidebar() {
         .map((msg) => `${msg.role}: ${msg.content}`)
         .join('\n');
 
-      const result = await askGemini({
-        apiKey,
-        prompt: `You are a conversational AI assistant inside a professional writing editor.
-IMPORTANT RULES:
-
-- If the user asks to rewrite, improve, transform, capitalize, shorten, expand, or modify text:
-  return BOTH:
-  1. a short conversational response
-  2. the rewritten content
-
-FORMAT:
-
-MESSAGE:
-<short assistant reply>
-
-SUGGESTION:
-<rewritten content>
-
----
-
-- If no rewrite is needed, leave SUGGESTION empty.
-
-- NEVER explain the rewrite inside suggestion.
-- ONLY place actual replacement text inside SUGGESTION.
-
-FULL DOCUMENT CONTEXT:
-${documentText}
-
-Selected Text:
-${selectedText}
-
-Conversation History:
-${history}
-
-User:
-${prompt}
-`,
+      const response = await generateAIResponse({
+        provider,
+        prompt,
+        selectedText,
+        documentText,
+        history,
       });
-      const messageMatch = result.match(/MESSAGE:\s*([\s\S]*?)SUGGESTION:/i);
+      const messageMatch = response.match(/MESSAGE:\s*([\s\S]*?)SUGGESTION:/i);
 
-      const suggestionMatch = result.match(/SUGGESTION:\s*([\s\S]*)/i);
+      const suggestionMatch = response.match(/SUGGESTION:\s*([\s\S]*)/i);
 
-      const message = messageMatch?.[1]?.trim() || result;
+      const message = messageMatch?.[1]?.trim() || response;
 
       const suggestion = suggestionMatch?.[1]?.trim() || '';
       addMessage({
@@ -120,10 +94,34 @@ ${prompt}
       {/* Header */}
       <div className="p-1 flex items-center justify-between">
         <h2 className="font-semibold text-sm pl-3">Conqr AI</h2>
-        <button  onClick={() => {clearConversation();clearPendingSuggestion();setPrompt("");}} className="flex items-center gap-2 py-1 px-2 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-sm bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]">
-          <Plus size={14} />
-          New Chat
-        </button>
+        <span className="flex items-center gap-3">
+          <span className="flex items-center gap-1">
+            <span className="relative flex h-1 w-1">
+              <span
+                className={`absolute inline-flex h-full w-full animate-ping rounded-full ${geminiApiKey === '' && groqApiKey === '' ? 'bg-red-400' : 'bg-green-400'} opacity-75`}
+              />
+
+              <span
+                className={`relative inline-flex h-1 w-1 rounded-full ${geminiApiKey === '' && groqApiKey === '' ? 'bg-red-500' : 'bg-green-500'}`}
+              />
+            </span>
+
+            <p className="text-[8px] uppercase text-[--text-muted]">
+              {provider}
+            </p>
+          </span>
+          <button
+            onClick={() => {
+              clearConversation();
+              clearPendingSuggestion();
+              setPrompt('');
+            }}
+            className="flex items-center gap-1 py-1 px-1 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-[11px] bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
+          >
+            <Plus size={10} />
+            New Chat
+          </button>
+        </span>
       </div>
       {/* Messages */}
       <div className="flex-1 min-h-0 overflow-y-auto p-4">
@@ -184,15 +182,34 @@ ${prompt}
                       className="text-[11px] !mt-2"
                       style={{ margin: 0, lineHeight: '110%' }}
                     >
-                      {message.content?.replace(/MESSAGE:/gi,"")?.trim()}
+                      {message.content?.replace(/MESSAGE:/gi, '')?.trim()}
                     </p>
                   </div>
                 ))}
               </div>
+              {loading && (
+                <div className="mb-2 flex items-center gap-1 text-[8px] uppercase text-[--text-muted] font-mono">
+                  <span>AI is thinking</span>
+
+                  <div className="flex">
+                    <span className="animate-bounce [animation-delay:0ms]">
+                      .
+                    </span>
+
+                    <span className="animate-bounce [animation-delay:150ms]">
+                      .
+                    </span>
+
+                    <span className="animate-bounce [animation-delay:300ms]">
+                      .
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {/* AI Suggestion */}
-          {pendingSuggestion && pendingSuggestion !== '---' && (
+          {pendingSuggestion && (pendingSuggestion !== '---' || pendingSuggestion !== 'None' || pendingSuggestion !== 'None needed.') && (
             <div>
               <div className="mb-2 !text-[8px] uppercase text-[--text-muted]">
                 Suggestion
@@ -227,6 +244,7 @@ ${prompt}
               </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
       </div>
       {/* Input */}

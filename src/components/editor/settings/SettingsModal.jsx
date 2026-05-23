@@ -5,7 +5,14 @@ import { X, Eye, EyeOff, Copy, Check } from 'lucide-react';
 import { useSettingsStore } from '@/store/settingsStore';
 
 export default function SettingsModal({ open, onClose }) {
-  const { geminiApiKey, setGeminiApiKey } = useSettingsStore();
+  const {
+    provider,
+    setProvider,
+    geminiApiKey,
+    setGeminiApiKey,
+    groqApiKey,
+    setGroqApiKey,
+  } = useSettingsStore();
   const [copied, setCopied] = useState(false);
   const [value, setValue] = useState(geminiApiKey);
   const [isVisible, setIsVisible] = useState(false);
@@ -31,9 +38,9 @@ export default function SettingsModal({ open, onClose }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-lg border border-[var(--border)] bg-[var(--conqr-muted)] shadow-2xl">
-        <div className="mb-5 flex items-center justify-between border-b-1 border-b-[var(--conqr-secondary)] px-2">
+        <div className="mb-2 flex items-center justify-between border-b-1 border-b-[var(--conqr-secondary)] px-2">
           <p className="text-sm font-semibold !text-[var(--conqr-secondary)]">
-            AI Settings
+            API Key
           </p>
 
           <button
@@ -45,16 +52,43 @@ export default function SettingsModal({ open, onClose }) {
         </div>
 
         <div className="space-y-2 px-2">
-          <label className="text-sm text-[var(--text-muted)] font-mono">
-            Gemini API Key
-          </label>
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-col gap-1 items-start">
+            <div className="mt-1 flex gap-2">
+              <button
+                onClick={() => setProvider('gemini')}
+                className={`rounded-md border px-2 py-1 text-[10px] ${
+                  provider === 'gemini' ? 'bg-black text-white' : ''
+                }`}
+              >
+                Gemini
+              </button>
+
+              <button
+                onClick={() => setProvider('groq')}
+                className={`rounded-md border px-2 py-1 text-[10px] ${
+                  provider === 'groq' ? 'bg-black text-white' : ''
+                }`}
+              >
+                Groq
+              </button>
+            </div>
+            <div className="flex flex-row gap-1 items-center w-full">
             <input
-              type={isVisible ? 'text' : 'password'}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="your-gemini-key..."
-              className="w-full border-b-1 border-b-[var(--conqr-secondary)] bg-[var(--conqr-primary)] px-2 text-[11px] py-2 font-mono outline-none focus:border-[var(--primary)]"
+              type={isVisible ? "text" : "password"}
+              value={provider === 'groq' ? groqApiKey : geminiApiKey}
+              onChange={(e) => {
+                if (provider === 'groq') {
+                  setGroqApiKey(e.target.value);
+                } else {
+                  setGeminiApiKey(e.target.value);
+                }
+              }}
+              placeholder={
+                provider === 'groq'
+                  ? 'Enter Groq API Key'
+                  : 'Enter Gemini API Key'
+              }
+              className="w-full rounded-md border p-1 mr-1 text-[11px] outline-none"
             />
 
             <button
@@ -62,18 +96,19 @@ export default function SettingsModal({ open, onClose }) {
               className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition"
             >
               {copied ? (
-                <Check size={18} style={{ color: '#0ba300' }} />
+                <Check size={14} style={{ color: '#0ba300' }} />
               ) : (
-                <Copy size={18} />
+                <Copy size={14} />
               )}
             </button>
 
             <button
               onClick={() => setIsVisible(!isVisible)}
-              className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition"
+              className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition mr-2"
             >
-              {isVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+              {isVisible ? <Eye size={14} /> : <EyeOff size={14} />}
             </button>
+            </div>
           </div>
         </div>
         <a
@@ -92,7 +127,7 @@ export default function SettingsModal({ open, onClose }) {
 
               onClose();
             }}
-            className="mt-5 w-full rounded-md bg-[var(--conqr-secondary)] px-2 py-2 text-sm font-medium font-mono text-white transition-all hover:opacity-90 cursor-pointer"
+            className="mt-3 w-full rounded-md bg-[var(--conqr-secondary)] p-1 text-[11px] font-medium font-mono text-white transition-all hover:opacity-90 cursor-pointer"
           >
             Save Settings
           </button>

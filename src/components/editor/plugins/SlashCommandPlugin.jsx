@@ -19,7 +19,7 @@ import {
 import { $convertFromMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { $setBlocksType } from '@lexical/selection';
 import { $createCodeNode } from '@lexical/code';
-import { askGemini } from '@/lib/ai/gemini';
+import { generateAIResponse } from '@/lib/ai';
 import { useSettingsStore } from '@/store/settingsStore';
 import { $getRoot } from 'lexical';
 import { useRef } from 'react';
@@ -36,6 +36,7 @@ export default function SlashCommandPlugin() {
   const [dismissed, setDismissed] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const menuRef = useRef(null);
+  const { provider } = useSettingsStore.getState();
 
   const runAICommand = async (type) => {
     if (!geminiApiKey) {
@@ -70,9 +71,10 @@ export default function SlashCommandPlugin() {
     try {
       setLoading(true);
 
-      const response = await askGemini({
-        apiKey: geminiApiKey,
+      const response = await generateAIResponse({
+        provider,
         prompt,
+        selectedText,
       });
 
       editor.update(() => {

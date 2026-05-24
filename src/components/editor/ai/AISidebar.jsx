@@ -106,21 +106,14 @@ const lowerSuggestion = cleanSuggestion?.toLowerCase();
 const metaResponses = [
   'none needed',
   'no suggestion',
-  'no changes needed',
-  'no changes required',
-  'already concise',
-  'already accurate',
-  'accurately reflects',
-  'however, if a rewritten version is required',
+  'no changes needed'
 ];
 
 const isMetaResponse = metaResponses.some((item) =>
   lowerSuggestion?.includes(item)
 );
 
-const isActuallyDifferent = cleanSuggestion && selectedText && cleanSuggestion.trim() !== selectedText.trim();
-
-const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggestions.includes(cleanSuggestion) && !isMetaResponse && isActuallyDifferent && cleanSuggestion.length > 12;
+const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggestions.includes(cleanSuggestion) && !isMetaResponse;
 
 
       if (shouldShowSuggestion) {
@@ -206,7 +199,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
                     return (
                       <div
                         key={index}
-                        className="rounded-2xl border border-[#dac7f7] bg-[#f8f3ff] p-2 mb-4"
+                        className="rounded-2xl border-0 bg-[#f8f3ff] shadow-xl pt-2 pb-4 px-4 mb-4"
                       >
                         <div className="flex items-center gap-1">
                           <div className="relative flex h-1 w-1">

@@ -7,6 +7,7 @@
 
   --white: #f0f0f0;
   --white-secondary: #ebebeb;
+  --white-tertiary: #f7f0e0;
 
   --card: #ffffff;
   --card-foreground: #242424;
@@ -26,7 +27,7 @@
   --accent: #f4f4f5;
   --accent-foreground: #18181b;
 
-  --border: #e4e4e7;
+  --border: #dbdbdd;
   --border-bold: #d4d4d8;
   --border-muted: #fff;
   --input: #e4e4e7;
@@ -42,7 +43,7 @@
   --text-muted: #71717a;
   --text-conqr: #0c4160;
 
-  --conqr-primary: #f8cd9f;
+  --conqr-primary: #f0f0f0;
   --conqr-muted: #fae3ca;
   --conqr-secondary: #0c4160;
   --conqr-secondary-light: #0c416077;
@@ -115,7 +116,6 @@ h6 {
 h1 {
   font-weight: 700 !important;
   color: var(--text-primary) !important;
-  border-bottom: 1px solid var(--border) !important;
 }
 
 h2 {
@@ -274,7 +274,35 @@ pre code {
   border-left: 3px solid var(--conqr-secondary) !important;
 }
 
+.editor-content {
+  height: 100%;
+}
+
 * {
   scrollbar-color: #bbbbbb #00000000 !important;
   scrollbar-width: thin;
+}
+
+.tag-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 11px;
+  border-radius: 40px;
+  background-color: #efefef;
+  color: var(--conqr-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+/* Example styles for reusable classes */
+.removed-text {
+  color: red;
+  text-decoration: line-through;
+}
+
+.added-text {
+  color: green;
+  text-decoration: underline;
 }

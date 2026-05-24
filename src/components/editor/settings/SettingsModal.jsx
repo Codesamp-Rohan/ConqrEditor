@@ -73,41 +73,41 @@ export default function SettingsModal({ open, onClose }) {
               </button>
             </div>
             <div className="flex flex-row gap-1 items-center w-full">
-            <input
-              type={isVisible ? "text" : "password"}
-              value={provider === 'groq' ? groqApiKey : geminiApiKey}
-              onChange={(e) => {
-                if (provider === 'groq') {
-                  setGroqApiKey(e.target.value);
-                } else {
-                  setGeminiApiKey(e.target.value);
+              <input
+                type={isVisible ? 'text' : 'password'}
+                value={provider === 'groq' ? groqApiKey : geminiApiKey}
+                onChange={(e) => {
+                  if (provider === 'groq') {
+                    setGroqApiKey(e.target.value);
+                  } else {
+                    setGeminiApiKey(e.target.value);
+                  }
+                }}
+                placeholder={
+                  provider === 'groq'
+                    ? 'Enter Groq API Key'
+                    : 'Enter Gemini API Key'
                 }
-              }}
-              placeholder={
-                provider === 'groq'
-                  ? 'Enter Groq API Key'
-                  : 'Enter Gemini API Key'
-              }
-              className="w-full rounded-md border p-1 mr-1 text-[11px] outline-none"
-            />
+                className="w-full rounded-md border p-1 mr-1 text-[11px] outline-none"
+              />
 
-            <button
-              onClick={handleCopy}
-              className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition"
-            >
-              {copied ? (
-                <Check size={14} style={{ color: '#0ba300' }} />
-              ) : (
-                <Copy size={14} />
-              )}
-            </button>
+              <button
+                onClick={handleCopy}
+                className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition"
+              >
+                {copied ? (
+                  <Check size={14} style={{ color: '#0ba300' }} />
+                ) : (
+                  <Copy size={14} />
+                )}
+              </button>
 
-            <button
-              onClick={() => setIsVisible(!isVisible)}
-              className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition mr-2"
-            >
-              {isVisible ? <Eye size={14} /> : <EyeOff size={14} />}
-            </button>
+              <button
+                onClick={() => setIsVisible(!isVisible)}
+                className="rounded-md text-[var(--conqr-secondary)] hover:opacity-80 transition mr-2"
+              >
+                {isVisible ? <Eye size={14} /> : <EyeOff size={14} />}
+              </button>
             </div>
           </div>
         </div>

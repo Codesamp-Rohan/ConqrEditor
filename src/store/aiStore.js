@@ -8,17 +8,17 @@ export const useAIStore = create(
       loading: false,
       selectedText: "",
       aiResponse: "",
-      pendingSuggestion: "",
+      pendingSuggestion: null,
       messages: [],
       documentText: "",
 
-      setPendingSuggestion: (text) =>
+      setPendingSuggestion: (suggestion) =>
         set({
-          pendingSuggestion: text,
+          pendingSuggestion: suggestion,
         }),
       clearPendingSuggestion: () =>
         set({
-          pendingSuggestion: "",
+          pendingSuggestion: null,
         }),
       clearAIResponse: () =>
         set({

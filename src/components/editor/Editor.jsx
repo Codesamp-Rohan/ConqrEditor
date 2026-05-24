@@ -49,7 +49,37 @@ export default function Editor() {
           </p>
         </div>
       )}
-      <div className="min-h-screen bg-[var(--conqr-primary)] flex flex-col items-center">
+      <div className="min-h-screen bg-[var(--conqr-primary)] flex flex-col items-center relative overflow-hidden bg-[#f6ead7]">
+        {/* Background Glow */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+
+          {/* Top Right Glow */}
+          <div
+              className="absolute top-[-20%] right-[-10%] h-[500px] w-[500px] rounded-full blur-3xl opacity-40"
+              style={{
+                background:
+                    'radial-gradient(circle, #f8d89a 0%, transparent 70%)',
+              }}
+          />
+
+          {/* Bottom Left Glow */}
+          <div
+              className="absolute bottom-[-35%] left-[-20%] h-[900px] w-[900px] rounded-full blur-3xl opacity-70"
+              style={{
+                background:
+                    'radial-gradient(circle, #f2b16d 0%, #f2b16d99 25%, transparent 72%)',
+              }}
+          />
+
+          {/* Soft White Center */}
+          <div
+              className="absolute inset-0 opacity-80"
+              style={{
+                background:
+                    'radial-gradient(circle at center, #fffdf9 0%, transparent 70%)',
+              }}
+          />
+        </div>
         <Navbar
           setSettingsOpen={setSettingsOpen}
           onClear={() => {
@@ -59,8 +89,8 @@ export default function Editor() {
         <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] p-4">
           {/* Main Editor */}
           <div
-            className="relative border border-[var(--border)] overflow-auto w-screen h-screen max-h-[90vh] max-w-[1080px] bg-[var(--white)]"
-            style={{ borderRadius: '.5rem 0 0 .5rem' }}
+            className="relative overflow-auto w-screen border border-[var(--border)] shadow-none h-screen max-h-[90vh] max-w-[1080px] bg-[#ffffff44] backdrop-blur-[4px]"
+            style={{ borderRadius: '.5rem' }}
           >
             <Toolbar />
             <EditorAutoFocusPlugin />
@@ -75,7 +105,7 @@ export default function Editor() {
             <RichTextPlugin
               contentEditable={
                 <ContentEditable
-                  className={`editor-content ${ibmPlex.className} min-h-[500px] h-[calc(100% - 64px)] px-[4rem] py-5 outline-none leading-7 text-[var(--text-conqr)]`}
+                  className={`editor-content ${ibmPlex.className} min-h-[500px] h-[calc(100% - 64px)] px-[4rem] py-5 outline-none text-[var(--text-conqr)]`}
                   spellCheck={false}
                   data-gramm="false"
                   data-gramm_editor="false"

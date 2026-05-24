@@ -14,31 +14,32 @@ export default function SettingsModal({ open, onClose }) {
     setGroqApiKey,
   } = useSettingsStore();
   const [copied, setCopied] = useState(false);
-  const [value, setValue] = useState(geminiApiKey);
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    setValue(geminiApiKey);
-  }, [geminiApiKey]);
-
   const handleCopy = async () => {
-    if (!value) return;
+    const currentKey = provider === 'groq' ? groqApiKey : geminiApiKey;
 
-    await navigator.clipboard.writeText(value);
+    if (!currentKey) return;
 
-    setCopied(true);
+    try {
+      await navigator.clipboard.writeText(currentKey);
 
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
   };
 
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-lg border border-[var(--border)] bg-[var(--conqr-muted)] shadow-2xl">
-        <div className="mb-2 flex items-center justify-between border-b-1 border-b-[var(--conqr-secondary)] px-2">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm top-0 bottom-0 right-0 left-0 z-[9999]">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
+        <div className="mb-2 flex items-center justify-between border-b-1 border-b-[var(--border-bold)] px-2">
           <p className="text-sm font-semibold !text-[var(--conqr-secondary)]">
             API Key
           </p>
@@ -53,10 +54,10 @@ export default function SettingsModal({ open, onClose }) {
 
         <div className="space-y-2 px-2">
           <div className="flex flex-col gap-1 items-start">
-            <div className="mt-1 flex gap-2">
+            <div className="mt-1 flex gap-1">
               <button
                 onClick={() => setProvider('gemini')}
-                className={`rounded-md border px-2 py-1 text-[10px] ${
+                className={`rounded-md border-none px-2 py-1 text-[10px] ${
                   provider === 'gemini' ? 'bg-black text-white' : ''
                 }`}
               >
@@ -65,7 +66,7 @@ export default function SettingsModal({ open, onClose }) {
 
               <button
                 onClick={() => setProvider('groq')}
-                className={`rounded-md border px-2 py-1 text-[10px] ${
+                className={`rounded-md border-none px-2 py-1 text-[10px] ${
                   provider === 'groq' ? 'bg-black text-white' : ''
                 }`}
               >
@@ -88,7 +89,7 @@ export default function SettingsModal({ open, onClose }) {
                     ? 'Enter Groq API Key'
                     : 'Enter Gemini API Key'
                 }
-                className="w-full rounded-md border p-1 mr-1 text-[11px] outline-none"
+                className="w-full rounded-md border border-[#ddd] p-1 mr-1 text-[11px] outline-none"
               />
 
               <button
@@ -123,8 +124,6 @@ export default function SettingsModal({ open, onClose }) {
         <div className="px-2 pb-2">
           <button
             onClick={() => {
-              setGeminiApiKey(value);
-
               onClose();
             }}
             className="mt-3 w-full rounded-md bg-[var(--conqr-secondary)] p-1 text-[11px] font-medium font-mono text-white transition-all hover:opacity-90 cursor-pointer"

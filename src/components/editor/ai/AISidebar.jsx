@@ -35,6 +35,9 @@ export default function AISidebar() {
   const documentText = useAIStore((state) => state.documentText);
   const { messages, addMessage } = useAIStore();
   const messagesEndRef = useRef(null);
+  const scrollRef = useRef(null);
+  const [showTopFade, setShowTopFade] = useState(false);
+  const [showBottomFade, setShowBottomFade] = useState(false);
   const { geminiApiKey, groqApiKey } = useSettingsStore();
 
   useEffect(() => {
@@ -87,12 +90,27 @@ export default function AISidebar() {
         content: message,
       });
 
-      const invalidSuggestions = ['---', 'None', 'None needed.', ''];
+      const invalidSuggestions = [
+        '---',
+        'None',
+        'None needed.',
+        'No suggestion.',
+        'N/A',
+        '',
+      ];
 
-      if (!invalidSuggestions.includes(suggestion)) {
+      const cleanSuggestion = suggestion?.trim();
+
+      const shouldShowSuggestion =
+        selectedText &&
+        cleanSuggestion &&
+        !invalidSuggestions.includes(cleanSuggestion) &&
+        cleanSuggestion.length > 3;
+
+      if (shouldShowSuggestion) {
         setPendingSuggestion({
           selectedText,
-          suggested: suggestion,
+          suggested: cleanSuggestion,
         });
       }
 
@@ -108,7 +126,7 @@ export default function AISidebar() {
 
   return (
     <div
-      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] flex flex-col overflow-hidden"
+      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] flex flex-col overflow-hidden z-[999]"
       style={{ borderRadius: '0 .5rem .5rem 0' }}
     >
       {/* Header */}
@@ -143,7 +161,9 @@ export default function AISidebar() {
         </span>
       </div>
       {/* Messages */}
-      <div className={`min-h-0 overflow-y-auto p-4 ${isEmptyChat ? '' : 'flex-1'}`}>
+      <div
+        className={`min-h-0 overflow-y-auto p-4 ${isEmptyChat ? '' : 'flex-1'}`}
+      >
         <div className="space-y-4">
           {/* Selected Text */}
           {selectedText && (
@@ -168,84 +188,87 @@ export default function AISidebar() {
                   // SPECIAL UI FOR APPLIED SUGGESTIONS
                   if (message.role === 'suggestion_applied') {
                     return (
-                        <div
-                            key={index}
-                            className="rounded-2xl border border-[#dac7f7] bg-[#f8f3ff] p-2 mb-4"
-                        >
-                          <div className="flex items-center gap-1">
-                            <div className="relative flex h-1 w-1">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#792CA2] opacity-75" />
+                      <div
+                        key={index}
+                        className="rounded-2xl border border-[#dac7f7] bg-[#f8f3ff] p-2 mb-4"
+                      >
+                        <div className="flex items-center gap-1">
+                          <div className="relative flex h-1 w-1">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#792CA2] opacity-75" />
 
-                              <span className="relative inline-flex rounded-full h-1 w-1 bg-[#792CA2]" />
-                            </div>
-                            <p className="text-[8px] !font-bold uppercase tracking-wide text-[#792CA2] font-black">
-                              AI Suggestion Applied
-                            </p>
+                            <span className="relative inline-flex rounded-full h-1 w-1 bg-[#792CA2]" />
                           </div>
+                          <p className="text-[8px] !font-bold uppercase tracking-wide text-[#792CA2] font-black">
+                            AI Suggestion Applied
+                          </p>
+                        </div>
 
-                          {/* PREVIOUS */}
-                          <div className="mb-3">
-                            <p className="text-[9px] uppercase text-[#777] font-bold">
-                              Previous
-                            </p>
+                        {/* PREVIOUS */}
+                        <div className="mb-3">
+                          <p className="text-[9px] uppercase text-[#777] font-bold">
+                            Previous
+                          </p>
 
-                            <div className="rounded-lg border border-[#e5e5e5] bg-white p-2 text-[11px] text-[#666] max-h-[200px] overflow-auto">
-                              {message.original}
-                            </div>
-                          </div>
-
-                          {/* UPDATED */}
-                          <div>
-                            <p className="text-[9px] uppercase text-[#792CA2] mb-1 font-bold">
-                              Updated
-                            </p>
-
-                            <div className="rounded-lg border border-[#d8c4f3] bg-white p-2 text-[11px] text-[#792CA2] max-h-[200px] overflow-auto">
-                              {message.updated}
-                            </div>
+                          <div className="rounded-lg border border-[#e5e5e5] bg-white p-2 text-[11px] text-[#666] max-h-[200px] overflow-auto">
+                            {message.original}
                           </div>
                         </div>
+
+                        {/* UPDATED */}
+                        <div>
+                          <p className="text-[9px] uppercase text-[#792CA2] mb-1 font-bold">
+                            Updated
+                          </p>
+
+                          <div className="rounded-lg border border-[#d8c4f3] bg-white p-2 text-[11px] text-[#792CA2] max-h-[200px] overflow-auto">
+                            {message.updated}
+                          </div>
+                        </div>
+                      </div>
                     );
                   }
 
                   // NORMAL CHAT UI
                   return (
-                      <div
-                          key={index}
-                          className={`rounded-xl border w-[70%] w-fit min-w-[40%] whitespace-pre-wrap ${
-                              message.role === 'user'
-                                  ? 'ml-auto bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-[var(--white)]'
-                                  : 'bg-[#e0e0e0] text-[var(--conqr-secondary)] border-1 border-[#d7d7d7] p-0 max-w-[80%] !text-[#777] shadow-xl shadow-black/5'
-                          }`}
-                          style={{
-                            padding: '.5rem',
-                            marginBottom: message.role === 'user' ? '.25rem' : '1rem',
-                          }}
-                      >
-                        {message.role !== 'user' && (
-                            <p
-                                className="px-1 flex gap-[.15rem] items-center rounded-md uppercase !text-[8px]"
-                                style={{
-                                  fontWeight: 900,
-                                  backgroundColor:
-                                      message.role === 'user' ? '#ffffff44' : '#00000012',
-                                  width: 'fit-content',
-                                  margin: 0,
-                                  marginBottom: '.5rem',
-                                }}
-                            >
-                              {message.role !== 'user' && <Sparkle size={6} />}
-                              {message.role}
-                            </p>
-                        )}
-
+                    <div
+                      key={index}
+                      className={`rounded-xl border w-[70%] w-fit min-w-[40%] whitespace-pre-wrap ${
+                        message.role === 'user'
+                          ? 'ml-auto bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-[var(--white)]'
+                          : 'bg-[#e0e0e0] text-[var(--conqr-secondary)] border-1 border-[#d7d7d7] p-0 max-w-[80%] !text-[#777] shadow-xl shadow-black/5'
+                      }`}
+                      style={{
+                        padding: '.5rem',
+                        marginBottom:
+                          message.role === 'user' ? '.25rem' : '1rem',
+                      }}
+                    >
+                      {message.role !== 'user' && (
                         <p
-                            className="text-[11px]"
-                            style={{ margin: 0, lineHeight: '110%' }}
+                          className="px-1 flex gap-[.15rem] items-center rounded-md uppercase !text-[8px]"
+                          style={{
+                            fontWeight: 900,
+                            backgroundColor:
+                              message.role === 'user'
+                                ? '#ffffff44'
+                                : '#00000012',
+                            width: 'fit-content',
+                            margin: 0,
+                            marginBottom: '.5rem',
+                          }}
                         >
-                          {message.content?.replace(/MESSAGE:/gi, '')?.trim()}
+                          {message.role !== 'user' && <Sparkle size={6} />}
+                          {message.role}
                         </p>
-                      </div>
+                      )}
+
+                      <p
+                        className="text-[11px]"
+                        style={{ margin: 0, lineHeight: '110%' }}
+                      >
+                        {message.content?.replace(/MESSAGE:/gi, '')?.trim()}
+                      </p>
+                    </div>
                   );
                 })}
               </div>
@@ -299,7 +322,7 @@ export default function AISidebar() {
                     Changeable Text
                   </p>
 
-                  <div className="bg-[#eee] border-l-2 border-[#ff000044] p-2 text-[#ff000077]">
+                  <div className="bg-[#fff] border-l-2 border-[#ff000044] p-2 text-[#ff000077]">
                     {selectedText ||
                       pendingSuggestion.selectedText ||
                       'No selected text'}
@@ -318,38 +341,30 @@ export default function AISidebar() {
                 </div>
               </div>
 
-              <div className="flex gap-1 absolute top-2 right-2">
+              <div className="flex gap-1 absolute bottom-[-1rem] right-2">
                 <button
-                    onClick={() => {
-                      const originalText =
-                          selectedText || pendingSuggestion.selectedText;
-
-                      const updatedText =
-                          pendingSuggestion.suggested;
-
-                      // Apply to editor
-                      setAIResponse(updatedText);
-
-                      // Add special UI message
-                      addMessage({
-                        role: 'suggestion_applied',
-                        original: originalText,
-                        updated: updatedText,
-                      });
-
-                      // Remove suggestion panel
-                      clearPendingSuggestion();
-                    }}
-                  className="rounded-lg bg-[var(--conqr-secondary)] py-1 px-2 text-xs text-white flex items-center gap-1 cursor-pointer"
+                  onClick={() => {
+                    const originalText =
+                      selectedText || pendingSuggestion.selectedText;
+                    const updatedText = pendingSuggestion.suggested;
+                    setAIResponse(updatedText);
+                    addMessage({
+                      role: 'suggestion_applied',
+                      original: originalText,
+                      updated: updatedText,
+                    });
+                    clearPendingSuggestion();
+                  }}
+                  className="rounded-lg text-xs text-green-700 flex items-center gap-1 cursor-pointer"
                 >
-                  <Check size={10} />
+                  <Check size={12} />
                 </button>
 
                 <button
                   onClick={clearPendingSuggestion}
-                  className="rounded-lg border border-[var(--border)] py-1 px-2 text-xs bg-red-500 text-white flex items-center gap-1 cursor-pointer"
+                  className="rounded-lg text-xs text-red-500 flex items-center gap-1 cursor-pointer"
                 >
-                  <X size={10} />
+                  <X size={12} />
                 </button>
               </div>
             </div>
@@ -359,74 +374,84 @@ export default function AISidebar() {
       </div>
       {/* Input */}
       <div
-          className={`transition-all duration-500 ${
-              isEmptyChat
-                  ? 'flex-1 flex items-center justify-center px-6'
-                  : 'px-2 pb-2'
-          }`}
+        className={`transition-all duration-500 ${
+          isEmptyChat ? 'flex-1 flex items-center justify-center px-6' : 'px-2'
+        }`}
       >
         <div
-            className={`rounded-[28px]  transition-all duration-500 ${
-                isEmptyChat
-                    ? 'w-full max-w-[340px]'
-                    : 'w-full'
-            }`}
+          className={`rounded-[28px]  transition-all duration-500 ${
+            isEmptyChat ? 'w-full max-w-[340px]' : 'w-full'
+          }`}
         >
-
           {/* EMPTY CHAT HERO */}
           {isEmptyChat && (
-              <div className={"pl-4"}>
-                <h1
-                    className="text-[24px] leading-[95%] tracking-[-0.04em] text-[#2f2f2f]"
-                    style={{
-                      fontFamily: 'Georgia, serif',
-                    }}
-                >
-                  What shall we{' '}
-                  <span className="italic text-[#c6a66e]">
-            work on?
-          </span>
-                </h1>
+            <div className={'pl-4'}>
+              <h1
+                className="text-[24px] leading-[95%] tracking-[-0.04em] text-[#2f2f2f]"
+                style={{
+                  fontFamily: 'Georgia, serif',
+                }}
+              >
+                What shall we{' '}
+                <span className="italic text-[#c6a66e]">work on?</span>
+              </h1>
 
-                <p className="mt-3 text-[13px] text-[#8a8a8a]">
-                  Ask anything, or describe changes to make.
-                </p>
-              </div>
+              <p className="mt-3 text-[13px] text-[#8a8a8a]">
+                Ask anything, or describe changes to make.
+              </p>
+            </div>
           )}
+
+          <div className="my-2 flex flex-nowrap overflow-auto gap-1 scrollbar-hide">
+            {[
+              'Summarize this document',
+              'Rewrite professionally',
+              'Find legal risks',
+              'Improve clarity',
+            ].map((item) => (
+              <button
+                key={item}
+                onClick={() => setPrompt(item)}
+                className="rounded-full border border-[#e6ddcf] bg-white/70 px-2 py-1 text-[11px] text-[#6d6d6d] backdrop-blur-sm transition-all hover:border-[#d4c3a7] text-nowrap hover:bg-white hover:shadow-md cursor-pointer"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
 
           <div className="relative overflow-hidden bg-white rounded-[16px] px-4 py-4 shadow-inner border-1 border-[#ddd] flex items-end">
             {/* Input */}
             <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleRewrite();
-                  }
-                }}
-                rows={isEmptyChat ? 6 : 4}
-                placeholder="Initiate a query or send a command to the AI..."
-                className={`w-full resize-none bg-transparent pr-4 outline-none transition-all ${
-                    isEmptyChat
-                        ? 'text-[14px] text-[#1d1d1d] placeholder:text-[#a1a1a1]'
-                        : 'text-[14px] text-[#1d1d1d] placeholder:text-[#9b9b9b]'
-                }`}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleRewrite();
+                }
+              }}
+              rows={isEmptyChat ? 6 : 4}
+              placeholder="Initiate a query or send a command to the AI..."
+              className={`w-full resize-none bg-transparent pr-4 outline-none transition-all ${
+                isEmptyChat
+                  ? 'text-[14px] text-[#1d1d1d] placeholder:text-[#a1a1a1]'
+                  : 'text-[14px] text-[#1d1d1d] placeholder:text-[#9b9b9b]'
+              }`}
             />
 
             <button
-                onClick={handleRewrite}
-                className="flex p-2 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-white shadow-[0_8px_20px_rgba(123,97,255,0.35)] transition-all hover:scale-105 active:scale-95 cursor-pointer"
+              onClick={handleRewrite}
+              className="flex p-2 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-white shadow-[0_8px_20px_rgba(123,97,255,0.35)] transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
               {loading ? (
-                  <Loader2 size={14} className="animate-spin" />
+                <Loader2 size={14} className="animate-spin" />
               ) : (
-                  <Send size={14} />
+                <Send size={14} />
               )}
             </button>
           </div>
         </div>
       </div>
-      </div>
-      );
+    </div>
+  );
 }

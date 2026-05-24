@@ -52,32 +52,31 @@ export default function Editor() {
       <div className="min-h-screen bg-[var(--conqr-primary)] flex flex-col items-center relative overflow-hidden bg-[#f6ead7]">
         {/* Background Glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-
           {/* Top Right Glow */}
           <div
-              className="absolute top-[-20%] right-[-10%] h-[500px] w-[500px] rounded-full blur-3xl opacity-40"
-              style={{
-                background:
-                    'radial-gradient(circle, #f8d89a 0%, transparent 70%)',
-              }}
+            className="absolute top-[-20%] right-[-10%] h-[500px] w-[500px] rounded-full blur-3xl opacity-40"
+            style={{
+              background:
+                'radial-gradient(circle, #f8d89a 0%, transparent 70%)',
+            }}
           />
 
           {/* Bottom Left Glow */}
           <div
-              className="absolute bottom-[-35%] left-[-20%] h-[900px] w-[900px] rounded-full blur-3xl opacity-70"
-              style={{
-                background:
-                    'radial-gradient(circle, #f2b16d 0%, #f2b16d99 25%, transparent 72%)',
-              }}
+            className="absolute bottom-[-35%] left-[-20%] h-[900px] w-[900px] rounded-full blur-3xl opacity-70"
+            style={{
+              background:
+                'radial-gradient(circle, #f2b16d 0%, #f2b16d99 25%, transparent 72%)',
+            }}
           />
 
           {/* Soft White Center */}
           <div
-              className="absolute inset-0 opacity-80"
-              style={{
-                background:
-                    'radial-gradient(circle at center, #fffdf9 0%, transparent 70%)',
-              }}
+            className="absolute inset-0 opacity-80"
+            style={{
+              background:
+                'radial-gradient(circle at center, #fffdf9 0%, transparent 70%)',
+            }}
           />
         </div>
         <Navbar
@@ -121,14 +120,14 @@ export default function Editor() {
 
             <HistoryPlugin />
             <LocalStoragePlugin />
-            <SettingsModal
-              open={settingsOpen}
-              onClose={() => setSettingsOpen(false)}
-            />
           </div>
           <AISidebar />
         </div>
       </div>
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+      />
     </LexicalComposer>
   );
 }

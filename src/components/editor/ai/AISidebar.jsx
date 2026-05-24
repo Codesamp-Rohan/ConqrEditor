@@ -99,13 +99,29 @@ export default function AISidebar() {
         '',
       ];
 
-      const cleanSuggestion = suggestion?.trim();
+const cleanSuggestion = suggestion?.trim();
 
-      const shouldShowSuggestion =
-        selectedText &&
-        cleanSuggestion &&
-        !invalidSuggestions.includes(cleanSuggestion) &&
-        cleanSuggestion.length > 3;
+const lowerSuggestion = cleanSuggestion?.toLowerCase();
+
+const metaResponses = [
+  'none needed',
+  'no suggestion',
+  'no changes needed',
+  'no changes required',
+  'already concise',
+  'already accurate',
+  'accurately reflects',
+  'however, if a rewritten version is required',
+];
+
+const isMetaResponse = metaResponses.some((item) =>
+  lowerSuggestion?.includes(item)
+);
+
+const isActuallyDifferent = cleanSuggestion && selectedText && cleanSuggestion.trim() !== selectedText.trim();
+
+const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggestions.includes(cleanSuggestion) && !isMetaResponse && isActuallyDifferent && cleanSuggestion.length > 12;
+
 
       if (shouldShowSuggestion) {
         setPendingSuggestion({

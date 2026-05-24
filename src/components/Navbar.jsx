@@ -64,21 +64,48 @@ export const Navbar = ({ setSettingsOpen, onClear }) => {
     saveAs(blob, "conqr-document.md");
   };
 
-  const exportPDF = () => {
-    const editor = document.querySelector(".editor-content");
+const exportPDF = () => {
+  const editor = document.querySelector('.editor-content');
 
-    if (!editor) return;
+  if (!editor) return;
 
-    const content = editor.innerText;
+  const content = editor.innerText;
 
-    const pdf = new jsPDF();
+  const pdf = new jsPDF({
+    unit: 'pt',
+    format: 'a4',
+  });
 
-    const lines = pdf.splitTextToSize(content, 180);
+  const margin = 40;
 
-    pdf.text(lines, 10, 10);
+  const pageWidth = pdf.internal.pageSize.getWidth();
 
-    pdf.save("conqr-document.pdf");
-  };
+  const pageHeight = pdf.internal.pageSize.getHeight();
+
+  const maxLineWidth = pageWidth - margin * 2;
+
+  const lineHeight = 18;
+
+  const lines = pdf.splitTextToSize(content, maxLineWidth);
+
+  let cursorY = margin;
+
+  lines.forEach((line) => {
+
+    // ADD NEW PAGE IF OVERFLOW
+    if (cursorY > pageHeight - margin) {
+      pdf.addPage();
+
+      cursorY = margin;
+    }
+
+    pdf.text(line, margin, cursorY);
+
+    cursorY += lineHeight;
+  });
+
+  pdf.save('conqr-document.pdf');
+};
 
   const exportDOCX = async () => {
     const editor = document.querySelector(".editor-content");

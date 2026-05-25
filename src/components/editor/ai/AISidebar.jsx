@@ -394,12 +394,9 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
         >
           {/* EMPTY CHAT HERO */}
           {isEmptyChat && (
-            <div className={'pl-4'}>
+            <div>
               <h1
-                className="text-[24px] leading-[95%] tracking-[-0.04em] text-[#2f2f2f]"
-                style={{
-                  fontFamily: 'Georgia, serif',
-                }}
+                className="text-[32px] !font-medium leading-[95%] tracking-[-0.04em] text-[#2f2f2f] heading-serif"
               >
                 What shall we{' '}
                 <span className="italic text-[#c6a66e]">work on?</span>
@@ -411,7 +408,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
             </div>
           )}
 
-          <div className="my-2 flex flex-nowrap overflow-auto gap-1 scrollbar-hide">
+          <div className={`my-2 flex heading-serif ${isEmptyChat ? 'flex-wrap' : 'flex-nowrap'} overflow-auto gap-1 scrollbar-hide`}>
             {[
               'Summarize this document',
               'Rewrite professionally',
@@ -441,7 +438,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
               }}
               rows={isEmptyChat ? 6 : 4}
               placeholder="Initiate a query or send a command to the AI..."
-              className={`w-full resize-none bg-transparent pr-4 outline-none transition-all ${
+              className={`w-full heading-serif resize-none bg-transparent pr-4 outline-none transition-all ${
                 isEmptyChat
                   ? 'text-[14px] text-[#1d1d1d] placeholder:text-[#a1a1a1]'
                   : 'text-[14px] text-[#1d1d1d] placeholder:text-[#9b9b9b]'

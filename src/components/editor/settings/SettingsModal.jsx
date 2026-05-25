@@ -40,24 +40,24 @@ export default function SettingsModal({ open, onClose }) {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm top-0 bottom-0 right-0 left-0 z-[9999]">
       <div className="w-full max-w-md rounded-2xl border border-[var(--border)] bg-white shadow-2xl">
         <div className="mb-2 flex items-center justify-between border-b-1 border-b-[var(--border-bold)] px-2">
-          <p className="text-sm font-semibold !text-[var(--conqr-secondary)]">
+          <p className="text-lg font-semibold !text-[var(--conqr-secondary)] heading-serif">
             API Key
           </p>
 
           <button
             onClick={onClose}
-            className="rounded-md p-1 hover:bg-[#ffffff44] cursor-pointer"
+            className="rounded-md p-1 hover:text-[#00000077] cursor-pointer"
           >
-            <X size={14} />
+            <X size={18} />
           </button>
         </div>
 
         <div className="space-y-2 px-2">
           <div className="flex flex-col gap-1 items-start">
-            <div className="mt-1 flex gap-1">
+            <div className="mt-1 flex gap-1 bg-[var(--secondary)] border-1 border-[#ddd] p-[2px] rounded-md">
               <button
                 onClick={() => setProvider('gemini')}
-                className={`rounded-md border-none px-2 py-1 text-[10px] ${
+                className={`rounded-md border-none px-2 py-1 text-[10px] cursor-pointer ${
                   provider === 'gemini' ? 'bg-black text-white' : ''
                 }`}
               >
@@ -66,7 +66,7 @@ export default function SettingsModal({ open, onClose }) {
 
               <button
                 onClick={() => setProvider('groq')}
-                className={`rounded-md border-none px-2 py-1 text-[10px] ${
+                className={`rounded-md border-none px-2 py-1 text-[10px] cursor-pointer ${
                   provider === 'groq' ? 'bg-black text-white' : ''
                 }`}
               >

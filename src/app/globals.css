@@ -101,6 +101,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.heading-serif {
+  font-family: var(--font-instrument-serif);
+}
+
 h1,
 h2,
 h3,

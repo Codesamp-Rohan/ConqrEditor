@@ -10,12 +10,15 @@ export async function generateWithGroq({
 }) {
   const { groqApiKey } = useSettingsStore.getState();
 
-  if (!groqApiKey) {
-    throw new Error("Missing Groq API Key");
+  // Fallback to ENV key
+  const apiKey = groqApiKey || process.env.NEXT_PUBLIC_GROQ_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("No Groq API key found in settings or .env.local");
   }
 
   const groq = new Groq({
-    apiKey: groqApiKey,
+    apiKey,
     dangerouslyAllowBrowser: true,
   });
 

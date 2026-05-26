@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
 });
 
 const instrumentSerif = Instrument_Serif({
-  subsets: ['latin'],
-  variable: '--font-instrument-serif',
-  weight: '400',
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+  weight: "400",
 });
 
 export const metadata = {

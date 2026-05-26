@@ -9,11 +9,14 @@ export async function generateWithGemini({
 }) {
   const { geminiApiKey } = useSettingsStore.getState();
 
-  if (!geminiApiKey) {
-    throw new Error("Missing Gemini API Key");
+  // Fallback to ENV key
+  const apiKey = geminiApiKey || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("No Gemini API key found in settings or .env.local");
   }
 
-  const genAI = new GoogleGenerativeAI(geminiApiKey);
+  const genAI = new GoogleGenerativeAI(apiKey);
 
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash-lite",

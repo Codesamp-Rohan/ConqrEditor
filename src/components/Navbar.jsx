@@ -64,48 +64,47 @@ export const Navbar = ({ setSettingsOpen, onClear }) => {
     saveAs(blob, "conqr-document.md");
   };
 
-const exportPDF = () => {
-  const editor = document.querySelector('.editor-content');
+  const exportPDF = () => {
+    const editor = document.querySelector(".editor-content");
 
-  if (!editor) return;
+    if (!editor) return;
 
-  const content = editor.innerText;
+    const content = editor.innerText;
 
-  const pdf = new jsPDF({
-    unit: 'pt',
-    format: 'a4',
-  });
+    const pdf = new jsPDF({
+      unit: "pt",
+      format: "a4",
+    });
 
-  const margin = 40;
+    const margin = 40;
 
-  const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageWidth = pdf.internal.pageSize.getWidth();
 
-  const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-  const maxLineWidth = pageWidth - margin * 2;
+    const maxLineWidth = pageWidth - margin * 2;
 
-  const lineHeight = 18;
+    const lineHeight = 18;
 
-  const lines = pdf.splitTextToSize(content, maxLineWidth);
+    const lines = pdf.splitTextToSize(content, maxLineWidth);
 
-  let cursorY = margin;
+    let cursorY = margin;
 
-  lines.forEach((line) => {
+    lines.forEach((line) => {
+      // ADD NEW PAGE IF OVERFLOW
+      if (cursorY > pageHeight - margin) {
+        pdf.addPage();
 
-    // ADD NEW PAGE IF OVERFLOW
-    if (cursorY > pageHeight - margin) {
-      pdf.addPage();
+        cursorY = margin;
+      }
 
-      cursorY = margin;
-    }
+      pdf.text(line, margin, cursorY);
 
-    pdf.text(line, margin, cursorY);
+      cursorY += lineHeight;
+    });
 
-    cursorY += lineHeight;
-  });
-
-  pdf.save('conqr-document.pdf');
-};
+    pdf.save("conqr-document.pdf");
+  };
 
   const exportDOCX = async () => {
     const editor = document.querySelector(".editor-content");

@@ -39,6 +39,54 @@ export default function AISidebar() {
   const [showTopFade, setShowTopFade] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(false);
   const { geminiApiKey, groqApiKey } = useSettingsStore();
+  const MAX_RUNS = 5;
+  const RESET_HOURS = 3;
+  const [aiRuns, setAiRuns] = useState(0);
+  const [expiryTime, setExpiryTime] = useState(null);
+
+ useEffect(() => {
+  const storedRuns =
+    localStorage.getItem('conqr_ai_runs');
+
+  const storedExpiry =
+    localStorage.getItem(
+      'conqr_ai_runs_expiry'
+    );
+
+  const now = Date.now();
+
+  // RESET IF EXPIRED
+  if (
+    storedExpiry &&
+    now > Number(storedExpiry)
+  ) {
+    localStorage.removeItem(
+      'conqr_ai_runs'
+    );
+
+    localStorage.removeItem(
+      'conqr_ai_runs_expiry'
+    );
+
+    setAiRuns(0);
+
+    setExpiryTime(null);
+
+    return;
+  }
+
+  if (storedRuns) {
+    setAiRuns(Number(storedRuns));
+  }
+
+  if (storedExpiry) {
+    const parsedExpiry = Number(storedExpiry);
+
+if (!isNaN(parsedExpiry)) {
+  setExpiryTime(parsedExpiry);
+}
+  }
+}, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -46,7 +94,36 @@ export default function AISidebar() {
     });
   }, [messages, loading, pendingSuggestion]);
 
+  function updateAIRuns(newRuns) {
+  setAiRuns(newRuns);
+
+  localStorage.setItem(
+    'conqr_ai_runs',
+    newRuns
+  );
+
+  if (
+    !localStorage.getItem(
+      'conqr_ai_runs_expiry'
+    )
+  ) {
+    const expiry =
+      Date.now() +
+      RESET_HOURS *
+        60 *
+        60 *
+        1000;
+
+    localStorage.setItem(
+      'conqr_ai_runs_expiry',
+      expiry
+    );
+  }
+}
   async function handleRewrite() {
+    if (aiRuns >= MAX_RUNS) {
+  return;
+}
     if (!prompt.trim()) return;
 
     try {
@@ -123,6 +200,8 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
         });
       }
 
+     updateAIRuns(aiRuns + 1);
+
       setPrompt('');
     } catch (error) {
       console.error(error);
@@ -130,6 +209,8 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
       setLoading(false);
     }
   }
+
+  const remainingMinutes = expiryTime && expiryTime > Date.now() ? Math.ceil((expiryTime - Date.now()) / (1000 * 60)) : 0;
 
   const isEmptyChat = messages.length === 0;
 
@@ -244,7 +325,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
                       className={`rounded-xl border w-[70%] w-fit min-w-[40%] whitespace-pre-wrap ${
                         message.role === 'user'
                           ? 'ml-auto bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-[var(--white)]'
-                          : 'bg-[#e0e0e0] text-[var(--conqr-secondary)] border-1 border-[#d7d7d7] p-0 max-w-[80%] !text-[#777] shadow-xl shadow-black/5'
+                          : 'bg-[#e0e0e0] text-[var(--conqr-secondary)] border-1 border-[#d7d7d7] p-0 max-w-[90%] !text-[#777] shadow-xl shadow-black/5'
                       }`}
                       style={{
                         padding: '.5rem',
@@ -273,7 +354,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
 
                       <p
                         className="text-[11px]"
-                        style={{ margin: 0, lineHeight: '110%' }}
+                        style={{ margin: 0, lineHeight: '130%' }}
                       >
                         {message.content?.replace(/MESSAGE:/gi, '')?.trim()}
                       </p>
@@ -384,7 +465,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
       {/* Input */}
       <div
         className={`transition-all duration-500 ${
-          isEmptyChat ? 'flex-1 flex items-center justify-center px-6' : 'px-2'
+          isEmptyChat ? 'flex-1 flex items-center justify-center pl-4 pr-2' : 'px-2'
         }`}
       >
         <div
@@ -396,19 +477,19 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
           {isEmptyChat && (
             <div>
               <h1
-                className="text-[32px] !font-medium leading-[95%] tracking-[-0.04em] text-[#2f2f2f] heading-serif"
+                className="text-[24px] leading-[95%] !font-[300] tracking-[-0.04em] text-[#2f2f2f] is-font"
               >
                 What shall we{' '}
-                <span className="italic text-[#c6a66e]">work on?</span>
+                <span className="text-[#c6a66e]">work on?</span>
               </h1>
 
               <p className="mt-3 text-[13px] text-[#8a8a8a]">
-                Ask anything, or describe changes to make.
+                Select any of the below option to get started.
               </p>
             </div>
           )}
 
-          <div className={`my-2 flex heading-serif ${isEmptyChat ? 'flex-wrap' : 'flex-nowrap'} overflow-auto gap-1 scrollbar-hide`}>
+          <div className={`my-2 flex overflow-auto gap-1 scrollbar-hide flex-wrap`}>
             {[
               'Summarize this document',
               'Rewrite professionally',
@@ -418,44 +499,78 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
               <button
                 key={item}
                 onClick={() => setPrompt(item)}
-                className="rounded-full border border-[#e6ddcf] bg-white/70 px-2 py-1 text-[11px] text-[#6d6d6d] backdrop-blur-sm transition-all hover:border-[#d4c3a7] text-nowrap hover:bg-white hover:shadow-md cursor-pointer"
+                className="rounded-full border border-[#e6ddcf] bg-white/70 px-2 py-1 text-[11px] text-[#6d6d6d] backdrop-blur-sm transition-all hover:border-[#d4c3a7] text-nowrap hover:bg-white hover:shadow-md cursor-pointer is-font"
               >
                 {item}
               </button>
             ))}
           </div>
 
-          <div className="relative overflow-hidden bg-white rounded-[16px] px-4 py-4 shadow-inner border-1 border-[#ddd] flex items-end">
-            {/* Input */}
-            <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleRewrite();
-                }
-              }}
-              rows={isEmptyChat ? 6 : 4}
-              placeholder="Initiate a query or send a command to the AI..."
-              className={`w-full heading-serif resize-none bg-transparent pr-4 outline-none transition-all ${
-                isEmptyChat
-                  ? 'text-[14px] text-[#1d1d1d] placeholder:text-[#a1a1a1]'
-                  : 'text-[14px] text-[#1d1d1d] placeholder:text-[#9b9b9b]'
-              }`}
-            />
+        <div className="relative overflow-hidden bg-white rounded-[16px] px-4 py-4 shadow-inner border border-[#ddd] flex flex-col">
 
-            <button
-              onClick={handleRewrite}
-              className="flex p-2 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-white shadow-[0_8px_20px_rgba(123,97,255,0.35)] transition-all hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              {loading ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : (
-                <Send size={14} />
-              )}
-            </button>
-          </div>
+  {/* Textarea */}
+  <textarea
+    value={prompt}
+    onChange={(e) => setPrompt(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleRewrite();
+      }
+    }}
+    rows={isEmptyChat ? 6 : 2}
+    placeholder={
+      aiRuns >= MAX_RUNS
+        ? 'Free AI limit reached...'
+        : 'Initiate a query or send a command to the AI...'
+    }
+    disabled={aiRuns >= MAX_RUNS}
+    className={`w-full resize-none is-font bg-transparent outline-none transition-all pr-4 disabled:opacity-60 ${
+      isEmptyChat
+        ? 'text-[14px] text-[#1d1d1d] placeholder:text-[#a1a1a1]'
+        : 'text-[14px] text-[#1d1d1d] placeholder:text-[#9b9b9b]'
+    }`}
+  />
+
+  {/* Bottom Row */}
+  <div className="mt-3 flex items-center justify-between">
+
+    {/* AI Run Counter */}
+    <div className="flex flex-col items-start">
+      <p className="text-[11px] text-[#8b8b8b] !m-0 is-font" style={{ lineHeight: '100%' }}>
+        {aiRuns}/{MAX_RUNS} AI Runs
+      </p>
+        
+      <p className="text-[10px] is-font text-[#8b8b8b] !m-0" style={{ lineHeight: '100%' }}>Resets in {remainingMinutes} mins</p>
+
+      {aiRuns >= MAX_RUNS && (
+        <span className="text-[10px] text-red-500 uppercase">
+          Limit Reached
+        </span>
+      )}
+    </div>
+
+    {/* Send Button */}
+    <button
+      onClick={handleRewrite}
+      disabled={
+        !prompt.trim() ||
+        loading ||
+        aiRuns >= MAX_RUNS
+      }
+      className="flex p-2 items-center justify-center rounded-lg bg-[var(--conqr-secondary)] text-white shadow-[0_8px_20px_rgba(123,97,255,0.35)] transition-all hover:scale-105 active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+      {loading ? (
+        <Loader2
+          size={14}
+          className="animate-spin"
+        />
+      ) : (
+        <Send size={14} />
+      )}
+    </button>
+  </div>
+</div>
         </div>
       </div>
     </div>

@@ -22,6 +22,8 @@ import LocalStoragePlugin from '@/components/editor/plugins/LocalStoragePlugin';
 import ClearEditorPlugin from '@/components/editor/plugins/ClearEditorPlugin';
 import { Navbar } from '../Navbar';
 import AISidebar from './ai/AISidebar';
+import DefaultDocumentPlugin from '@/components/editor/plugins/DefaultDocumentPlugin';
+import defaultDocument from '@/data/defaultDocument';
 
 export default function Editor() {
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -93,6 +95,7 @@ export default function Editor() {
           >
             <Toolbar />
             <EditorAutoFocusPlugin />
+            <DefaultDocumentPlugin content={defaultDocument} />
             <EditorListPlugin />
             <SlashCommandPlugin />
             <FloatingToolbarPlugin />

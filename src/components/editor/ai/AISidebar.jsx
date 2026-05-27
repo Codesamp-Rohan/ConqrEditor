@@ -495,6 +495,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
               'Rewrite professionally',
               'Find legal risks',
               'Improve clarity',
+              'Make it more engaging',
             ].map((item) => (
               <button
                 key={item}

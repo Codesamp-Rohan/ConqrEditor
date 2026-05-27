@@ -13,12 +13,11 @@ import SelectionPlugin from '@/components/editor/plugins/SelectionPlugin';
 import ReplaceSelectionPlugin from '@/components/editor/plugins/ReplaceSelectionPlugin';
 import DocumentTrackerPlugin from '@/components/editor/plugins/DocumentTrackerPlugin';
 import { useState } from 'react';
-import SettingsModal from './settings/SettingsModal';
 import { useAIStore } from '@/store/aiStore';
 import { ibmPlex } from '@/lib/fonts';
 import editorConfig from './core/config';
 import Toolbar from './toolbar/Toolbar';
-import LocalStoragePlugin from '@/components/editor/plugins/LocalStoragePlugin';
+// import LocalStoragePlugin from '@/components/editor/plugins/LocalStoragePlugin';
 import ClearEditorPlugin from '@/components/editor/plugins/ClearEditorPlugin';
 import { Navbar } from '../Navbar';
 import AISidebar from './ai/AISidebar';
@@ -26,7 +25,6 @@ import DefaultDocumentPlugin from '@/components/editor/plugins/DefaultDocumentPl
 import defaultDocument from '@/data/defaultDocument';
 
 export default function Editor() {
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(0);
   const { loading } = useAIStore();
 
@@ -81,12 +79,7 @@ export default function Editor() {
             }}
           />
         </div>
-        <Navbar
-          setSettingsOpen={setSettingsOpen}
-          onClear={() => {
-            setClearTrigger((prev) => prev + 1);
-          }}
-        />
+        <Navbar />
         <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] p-4">
           {/* Main Editor */}
           <div
@@ -122,15 +115,11 @@ export default function Editor() {
             />
 
             <HistoryPlugin />
-            <LocalStoragePlugin />
+            {/* <LocalStoragePlugin /> */}
           </div>
           <AISidebar />
         </div>
       </div>
-      <SettingsModal
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-      />
     </LexicalComposer>
   );
 }

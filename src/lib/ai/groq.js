@@ -11,7 +11,7 @@ export async function generateWithGroq({
   const { groqApiKey } = useSettingsStore.getState();
 
   // Fallback to ENV key
-  const apiKey = groqApiKey || process.env.NEXT_PUBLIC_GROQ_API_KEY;
+  const apiKey = groqApiKey || process.env.GRAK;
 
   if (!apiKey) {
     throw new Error("No Groq API key found in settings or .env.local");

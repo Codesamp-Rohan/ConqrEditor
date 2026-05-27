@@ -10,7 +10,7 @@ export async function generateWithGemini({
   const { geminiApiKey } = useSettingsStore.getState();
 
   // Fallback to ENV key
-  const apiKey = geminiApiKey || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  const apiKey = geminiApiKey || process.env.GAK;
 
   if (!apiKey) {
     throw new Error("No Gemini API key found in settings or .env.local");

@@ -216,34 +216,18 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
 
   return (
     <div
-      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] flex flex-col overflow-hidden z-[999]"
-      style={{ borderRadius: '0 .5rem .5rem 0' }}
+      className="w-[380px] max-h-[90vh] h-[-webkit-fill-available] flex flex-col overflow-hidden z-[999] bg-[#ffffff] border-l-1 border-l-[#e7e7e7]"
     >
       {/* Header */}
-      <div className="p-1 flex justify-end items-center justify-between">
+      <div className="sticky-0 py-[5px] px-3 border-r-4 border-r-[var(--conqr-secondary)] flex justify-end items-center justify-between bg-[#e7e7e7]">
         <span className="flex items-center gap-3">
-          <span className="flex items-center gap-1">
-            <span className="relative flex h-1 w-1">
-              <span
-                className={`absolute inline-flex h-full w-full animate-ping rounded-full ${geminiApiKey === '' && groqApiKey === '' ? 'bg-red-400' : 'bg-green-400'} opacity-75`}
-              />
-
-              <span
-                className={`relative inline-flex h-1 w-1 rounded-full ${geminiApiKey === '' && groqApiKey === '' ? 'bg-red-500' : 'bg-green-500'}`}
-              />
-            </span>
-
-            <p className="text-[8px] uppercase text-[--text-muted]">
-              {provider}
-            </p>
-          </span>
           <button
             onClick={() => {
               clearConversation();
               clearPendingSuggestion();
               setPrompt('');
             }}
-            className="flex items-center gap-1 py-1 px-1 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--hover)] text-[11px] bg-[var(--foreground)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
+            className="flex items-center gap-1 py-1 px-2 rounded-md hover:bg-[var(--conqr-secondary)] hover:text-[var(--conqr-muted)] text-[11px] bg-[var(--conqr-secondary)] text-[var(--white)] cursor-pointer hover:shadow-xl shadow-black/5 hover:translate-y-[-1px] transition-[800ms]"
           >
             <Plus size={10} />
             New Chat
@@ -324,7 +308,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
                       key={index}
                       className={`rounded-xl border w-[70%] w-fit min-w-[40%] whitespace-pre-wrap ${
                         message.role === 'user'
-                          ? 'ml-auto bg-gradient-to-br from-[var(--conqr-secondary)] to-[var(--conqr-secondary-light)] text-[var(--white)]'
+                          ? 'ml-auto bg-[var(--conqr-secondary)] text-[var(--white)]'
                           : 'bg-[#e0e0e0] text-[var(--conqr-secondary)] border-1 border-[#d7d7d7] p-0 max-w-[90%] !text-[#777] shadow-xl shadow-black/5'
                       }`}
                       style={{
@@ -519,7 +503,7 @@ const shouldShowSuggestion = selectedText && cleanSuggestion && !invalidSuggesti
         handleRewrite();
       }
     }}
-    rows={isEmptyChat ? 6 : 2}
+    rows={isEmptyChat ? 4 : 2}
     placeholder={
       aiRuns >= MAX_RUNS
         ? 'Free AI limit reached...'

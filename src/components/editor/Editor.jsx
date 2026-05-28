@@ -1,5 +1,6 @@
 'use client';
 
+
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
@@ -80,12 +81,10 @@ export default function Editor() {
           />
         </div>
         <Navbar />
-        <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] p-4">
+        <div className="mx-auto h-full w-full flex items-center justify-center bg-[var(--conqr-primary)] px-4 mb-8">
           {/* Main Editor */}
           <div
-            className="relative overflow-auto w-screen border border-[var(--border)] shadow-none h-screen max-h-[90vh] max-w-[1080px] bg-[#ffffff44] backdrop-blur-[4px]"
-            style={{ borderRadius: '.5rem' }}
-          >
+            className="relative overflow-auto w-screen shadow-none h-screen max-h-[90vh] max-w-[1080px] bg-[#e0e0e0] backdrop-blur-[4px]" style={{ scrollbarWidth: 'none'}}>
             <Toolbar />
             <EditorAutoFocusPlugin />
             <DefaultDocumentPlugin content={defaultDocument} />

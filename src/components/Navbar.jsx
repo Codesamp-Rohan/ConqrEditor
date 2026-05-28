@@ -12,7 +12,7 @@ export const Navbar = () => {
         <h1 className="text-3xl !font-medium !text-[var(--text-conqr)] is-font">Conqr Words-Add In</h1>
         <p className="text-[16px] text-[#777] text-center" style={{ lineHeight: "1.2" }}>No new software. No training.<br/> Just better contracts on MS word.</p>
       </div>
-        <div className="bg-[#e0e0e0] w-full !w-[100%] p-4 border-x-4 border-[var(--conqr-secondary)] mt-8">
+        <div className="bg-[#e7e7e7] w-full !w-[100%] p-4 border-x-4 border-[var(--conqr-secondary)] mt-8">
         <h3 className="text-[16px] !font-medium !text-[var(--text-conqr)]">This demo showcases many of Conqr Words Add-in AI features. Try it out by typing a word in the text editor.</h3>
       </div>
     </div>

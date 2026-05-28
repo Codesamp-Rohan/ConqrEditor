@@ -1,5 +1,4 @@
-const defaultDocument = `
-NON-DISCLOSURE AGREEMENT
+const defaultDocument = `NON-DISCLOSURE AGREEMENT
 
 This Non-Disclosure Agreement ("Agreement") is entered into on May 26, 2026.
 
